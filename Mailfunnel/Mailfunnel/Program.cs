@@ -1,4 +1,6 @@
-﻿using Mailfunnel.SMTP;
+﻿using System.Net;
+using Mailfunnel.SMTP;
+using Mailfunnel.SMTP.Contracts;
 using Microsoft.Practices.Unity;
 
 namespace Mailfunnel

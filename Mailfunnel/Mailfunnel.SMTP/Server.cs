@@ -1,29 +1,32 @@
-﻿using System.Net;
-using System.Net.Sockets;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Mailfunnel.SMTP.Contracts;
 
 namespace Mailfunnel.SMTP
 {
     public class Server : IServer
     {
+        private readonly Lazy<ITcpListenerAdapter> _tcpListener;
         private readonly IMailCommunicator _mailCommunicator;
 
-        public Server(IMailCommunicator mailCommunicator)
+        public Server(Lazy<ITcpListenerAdapter> tcpListener, IMailCommunicator mailCommunicator)
         {
+            _tcpListener = tcpListener;
             _mailCommunicator = mailCommunicator;
         }
 
         public async void Listen()
         {
             var cts = new CancellationTokenSource();
-            var listener = new TcpListener(IPAddress.Any, 25);
+
+            var tcpListener = _tcpListener.Value;
 
             try
             {
-                listener.Start();
+                tcpListener.Start();
                 
-                    AcceptConnectionsAsync(listener, cts.Token);
+                    AcceptConnectionsAsync(tcpListener, cts.Token);
 
                 while (true)
                 {
@@ -33,11 +36,11 @@ namespace Mailfunnel.SMTP
             finally
             {
                 cts.Cancel();
-                listener.Stop();
+                tcpListener.Stop();
             }
         }
 
-        private async Task AcceptConnectionsAsync(TcpListener listener, CancellationToken token)
+        private async Task AcceptConnectionsAsync(ITcpListenerAdapter listener, CancellationToken token)
         {
             var connections = 0;
 

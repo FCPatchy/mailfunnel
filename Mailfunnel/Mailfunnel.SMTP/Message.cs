@@ -4,6 +4,7 @@ namespace Mailfunnel.SMTP
     {
         Greeting,
         EHLO,
-        OK
+        OK,
+        SendData
     }
 }
