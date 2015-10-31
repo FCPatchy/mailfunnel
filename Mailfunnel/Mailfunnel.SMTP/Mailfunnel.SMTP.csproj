@@ -56,18 +56,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMailCommunicator.cs" />
-    <Compile Include="IMessageProcessor.cs" />
-    <Compile Include="IMessageSender.cs" />
-    <Compile Include="IServer.cs" />
+    <Compile Include="Contracts\IMailCommunicator.cs" />
+    <Compile Include="Contracts\IMessageProcessor.cs" />
+    <Compile Include="Contracts\IMessageSender.cs" />
+    <Compile Include="Contracts\IServer.cs" />
+    <Compile Include="Contracts\ITcpClient.cs" />
+    <Compile Include="Contracts\ITcpListenerAdapter.cs" />
     <Compile Include="MailCommunicator.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageProcessor.cs" />
     <Compile Include="MessageSender.cs" />
+    <Compile Include="NetworkTcpListener.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMTPCommand.cs" />
-    <Compile Include="Utilities\EnumHelper.cs" />
+    <Compile Include="TcpClientAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

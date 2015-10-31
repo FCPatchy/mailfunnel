@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Mailfunnel.SMTP.Contracts;
 
 namespace Mailfunnel.SMTP
 {
@@ -8,6 +9,7 @@ namespace Mailfunnel.SMTP
         public SMTPCommand ProcessMessage(byte[] message)
         {
             var msg = Encoding.ASCII.GetString(message);
+            Console.WriteLine("Client says: " + msg.Replace('\r', ' ').Replace('\n', ' '));
 
             return ExtractCommand(msg);
         }

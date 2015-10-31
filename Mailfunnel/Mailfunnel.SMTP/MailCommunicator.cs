@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Mailfunnel.SMTP.Contracts;
 
 namespace Mailfunnel.SMTP
 {
@@ -13,11 +13,12 @@ namespace Mailfunnel.SMTP
 
         public MailCommunicator(IMessageSender messageSender, IMessageProcessor messageProcessor)
         {
+            Console.WriteLine("MailCommunicator init!");
             _messageSender = messageSender;
             _messageProcessor = messageProcessor;
         }
 
-        public async Task HandleClientAsync(TcpClient client, int connections, CancellationToken token)
+        public async Task HandleClientAsync(ITcpClient client, int connections, CancellationToken token)
         {
             using (client)
             {
@@ -49,14 +50,19 @@ namespace Mailfunnel.SMTP
                             Console.WriteLine("Replied to EHLO");
                             break;
 
-                        case SMTPCommand.MAILFROM:
+                        case SMTPCommand.MAIL:
                             _messageSender.SendMessage(stream, token, Message.OK);
                             Console.WriteLine("Replied to MAIL FROM");
                             break;
 
-                        case SMTPCommand.RCPTTO:
+                        case SMTPCommand.RCPT:
                             _messageSender.SendMessage(stream, token, Message.OK);
                             Console.WriteLine("Replied to RCPT TO");
+                            break;
+
+                            case SMTPCommand.DATA:
+                            _messageSender.SendMessage(stream, token, Message.SendData);
+                            Console.WriteLine("Replied to DATA");
                             break;
 
                         default:
