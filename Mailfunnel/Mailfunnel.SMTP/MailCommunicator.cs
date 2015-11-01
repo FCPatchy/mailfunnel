@@ -48,7 +48,7 @@ namespace Mailfunnel.SMTP
                     var amountRead = amountReadTask.Result;
                     if (amountRead == 0) break; // End of stream
 
-                    var messageText = Encoding.ASCII.GetString(buf).Trim();
+                    var messageText = Encoding.UTF8.GetString(buf).Trim();
 
                     if (messageText.Length > 0 && ClientMessageReceived != null)
                     {
