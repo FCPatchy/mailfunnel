@@ -102,21 +102,25 @@ namespace Mailfunnel.SMTP
         {
             // Check if the terminating sequence is present
             var lines = s.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            if (lines.Contains("."))
-            {
-                // End of transmission
-                client.ClientState = State.AwaitingMailCommand;
-                _mailCommunicator.SendMessage(client.TcpClient, client.CancellationToken, Message.OK);
 
-                if (MessageReceived != null)
+            foreach (var line in lines)
+            {
+                if (lines.Contains("."))
                 {
-                    MessageReceived(this, new MessageReceivedEventArgs(client.Message));
+                    // End of transmission
+                    client.ClientState = State.AwaitingMailCommand;
+                    _mailCommunicator.SendMessage(client.TcpClient, client.CancellationToken, Message.OK);
+
+                    if (MessageReceived != null)
+                    {
+                        MessageReceived(this, new MessageReceivedEventArgs(client.Message));
+                    }
+
+                    return;
                 }
 
-                return;
+                client.Message.Message += line + "\r\n";
             }
-
-            client.Message.Message += s;
         }
 
         private void BadSequence(Client client, string s)
