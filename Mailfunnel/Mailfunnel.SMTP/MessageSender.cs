@@ -29,6 +29,10 @@ namespace Mailfunnel.SMTP
                 case Message.SendData:
                     await SendData(stream, token);
                     break;
+
+                case Message.BadSequence:
+                    await SendBadSequence(stream, token);
+                    break;
             }
             
         }
@@ -51,14 +55,21 @@ namespace Mailfunnel.SMTP
         {
             var ehloBytes = Encoding.ASCII.GetBytes("250 OK\r\n");
             await stream.WriteAsync(ehloBytes, 0, ehloBytes.Length, token).ConfigureAwait(false);
-            Console.WriteLine("Server: 250");
+            Console.WriteLine("Server: 250 OK");
         }
 
         private async Task SendData(Stream stream, CancellationToken token)
         {
-            var ehloBytes = Encoding.ASCII.GetBytes("354 OK\r\n");
+            var ehloBytes = Encoding.ASCII.GetBytes("354 Start mail input; end with <CRLF>.<CRLF>\r\n");
             await stream.WriteAsync(ehloBytes, 0, ehloBytes.Length, token).ConfigureAwait(false);
-            Console.WriteLine("Server: Enter mail");
+            Console.WriteLine("Server: 354 Start mail input; end with <CRLF>.<CRLF>");
+        }
+
+        private async Task SendBadSequence(Stream stream, CancellationToken token)
+        {
+            var ehloBytes = Encoding.ASCII.GetBytes("503 Bad sequence of commands\r\n");
+            await stream.WriteAsync(ehloBytes, 0, ehloBytes.Length, token).ConfigureAwait(false);
+            Console.WriteLine("Server: 503 Bad sequence of commands");
         }
     }
 }

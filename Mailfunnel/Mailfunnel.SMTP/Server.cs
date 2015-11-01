@@ -9,11 +9,19 @@ namespace Mailfunnel.SMTP
     {
         private readonly Lazy<ITcpListenerAdapter> _tcpListener;
         private readonly IMailCommunicator _mailCommunicator;
+        private readonly IClientManager _clientManager;
 
-        public Server(Lazy<ITcpListenerAdapter> tcpListener, IMailCommunicator mailCommunicator)
+        public Server(Lazy<ITcpListenerAdapter> tcpListener, IMailCommunicator mailCommunicator, IClientManager clientManager)
         {
             _tcpListener = tcpListener;
             _mailCommunicator = mailCommunicator;
+            _clientManager = clientManager;
+
+            _clientManager.MessageReceived += (sender, args) =>
+            {
+                Console.WriteLine("We have a message!!!!");
+                var y = args.Message;
+            };
         }
 
         public async void Listen()
@@ -25,8 +33,8 @@ namespace Mailfunnel.SMTP
             try
             {
                 tcpListener.Start();
-                
-                    AcceptConnectionsAsync(tcpListener, cts.Token);
+
+                AcceptConnectionsAsync(tcpListener, cts.Token);
 
                 while (true)
                 {

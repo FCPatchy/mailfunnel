@@ -5,6 +5,7 @@ namespace Mailfunnel.SMTP
         Greeting,
         EHLO,
         OK,
-        SendData
+        SendData,
+        BadSequence
     }
 }

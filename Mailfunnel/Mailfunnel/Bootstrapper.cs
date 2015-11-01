@@ -14,8 +14,9 @@ namespace Mailfunnel
 
             container.RegisterType<IServer, Server>();
             container.RegisterType<ITcpListenerAdapter, NetworkTcpListener>(new InjectionConstructor(IPAddress.Any, 25));
+            container.RegisterType<IClientManager, ClientManager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMessageProcessor, MessageProcessor>();
-            container.RegisterType<IMailCommunicator, MailCommunicator>();
+            container.RegisterType<IMailCommunicator, MailCommunicator>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMessageSender, MessageSender>();
 
             return container;
