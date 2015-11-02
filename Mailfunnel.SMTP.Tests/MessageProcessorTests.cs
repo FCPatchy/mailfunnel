@@ -31,5 +31,31 @@ namespace Mailfunnel.SMTP.Tests
             Assert.AreEqual(SMTPCommand.Unknown, msg.SMTPCommand);
             Assert.AreEqual(rawMessage, msg.MessageText);
         }
+
+        [Test]
+        public void ProcessMessage_Returns_Message_When_Message_Too_Short_For_Command()
+        {
+            const string rawMessage = "ab";
+
+            var msgProcessor = new MessageProcessor();
+
+            var msg = msgProcessor.ProcessMessage(rawMessage);
+
+            Assert.AreEqual(SMTPCommand.Unknown, msg.SMTPCommand);
+            Assert.AreEqual(rawMessage, msg);
+        }
+
+        [Test]
+        public void ProcessMessage_Returns_No_Message_When_Command_Only()
+        {
+            const string rawMessage = "EHLO";
+
+            var msgProcessor = new MessageProcessor();
+
+            var msg = msgProcessor.ProcessMessage(rawMessage);
+
+            Assert.AreEqual(SMTPCommand.EHLO, msg.SMTPCommand);
+            Assert.AreEqual(string.Empty, msg.MessageText);
+        }
     }
 }
