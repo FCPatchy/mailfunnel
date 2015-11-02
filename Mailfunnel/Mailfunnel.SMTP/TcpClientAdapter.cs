@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Net.Sockets;
-using Mailfunnel.SMTP.Contracts;
+using Mailfunnel.SMTP.Network;
 
 namespace Mailfunnel.SMTP
 {

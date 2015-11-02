@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace Mailfunnel.SMTP
                     await SendEHLO(stream, token);
                     break;
 
-                    case Message.OK:
+                case Message.OK:
                     await SendOK(stream, token);
                     break;
 
@@ -34,7 +33,6 @@ namespace Mailfunnel.SMTP
                     await SendBadSequence(stream, token);
                     break;
             }
-            
         }
 
         private static async Task SendGreeting(Stream stream, CancellationToken token)

@@ -1,7 +1,9 @@
 ﻿using System.Net;
-using System.Net.Sockets;
 using Mailfunnel.SMTP;
+using Mailfunnel.SMTP.Clients;
 using Mailfunnel.SMTP.Contracts;
+using Mailfunnel.SMTP.Messages;
+using Mailfunnel.SMTP.Network;
 using Microsoft.Practices.Unity;
 
 namespace Mailfunnel
@@ -16,7 +18,7 @@ namespace Mailfunnel
             container.RegisterType<ITcpListenerAdapter, NetworkTcpListener>(new InjectionConstructor(IPAddress.Any, 25));
             container.RegisterType<IClientManager, ClientManager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMessageProcessor, MessageProcessor>();
-            container.RegisterType<IMailCommunicator, MailCommunicator>(new ContainerControlledLifetimeManager());
+            container.RegisterType<INetworkMessager, NetworkMessager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMessageSender, MessageSender>();
 
             return container;

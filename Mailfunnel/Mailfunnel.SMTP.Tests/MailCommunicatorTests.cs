@@ -1,7 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 using Mailfunnel.SMTP.Contracts;
+using Mailfunnel.SMTP.Messages;
+using Mailfunnel.SMTP.Network;
 using NUnit.Framework;
 
 namespace Mailfunnel.SMTP.Tests
@@ -9,22 +12,10 @@ namespace Mailfunnel.SMTP.Tests
     [TestFixture]
     public class MailCommunicatorTests
     {
-        [Test]
-        public async void HandleClientAsync_SendsWelcomeMessage()
-        {
-            var fakeMessageSender = new FakeMessageSender();
-            var mailCommunicator = new MailCommunicator(fakeMessageSender, new FakeMessageProcessor());
-
-            await mailCommunicator.HandleClientAsync(new FakeTcpClient(), 0, new CancellationToken());
-
-            Assert.AreEqual(Message.Greeting, fakeMessageSender.Message);
-        }
-
         internal class FakeTcpClient : ITcpClient
         {
             public void Dispose()
             {
-                
             }
 
             public Stream GetStream()
@@ -45,10 +36,26 @@ namespace Mailfunnel.SMTP.Tests
 
         internal class FakeMessageProcessor : IMessageProcessor
         {
+            public ClientMessage ProcessMessage(string message)
+            {
+                throw new NotImplementedException();
+            }
+
             public SMTPCommand ProcessMessage(byte[] message)
             {
                 return SMTPCommand.Unknown;
             }
+        }
+
+        [Test]
+        public async void HandleClientAsync_SendsWelcomeMessage()
+        {
+            var fakeMessageSender = new FakeMessageSender();
+            var mailCommunicator = new NetworkMessager();
+
+            await mailCommunicator.HandleClientAsync(new FakeTcpClient(), 0, new CancellationToken());
+
+            Assert.AreEqual(Message.Greeting, fakeMessageSender.Message);
         }
     }
 }
