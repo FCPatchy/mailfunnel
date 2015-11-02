@@ -42,7 +42,7 @@ namespace Mailfunnel.SMTP.Tests
             var msg = msgProcessor.ProcessMessage(rawMessage);
 
             Assert.AreEqual(SMTPCommand.Unknown, msg.SMTPCommand);
-            Assert.AreEqual(rawMessage, msg);
+            Assert.AreEqual(rawMessage, msg.MessageText);
         }
 
         [Test]
