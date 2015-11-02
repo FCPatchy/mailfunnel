@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Mailfunnel.SMTP.Clients;
 using Mailfunnel.SMTP.Contracts;
+using Mailfunnel.SMTP.Network;
 
 namespace Mailfunnel.SMTP
 {
     public class Server : IServer
     {
-        private readonly Lazy<ITcpListenerAdapter> _tcpListener;
-        private readonly IMailCommunicator _mailCommunicator;
         private readonly IClientManager _clientManager;
+        private readonly INetworkMessager _networkMessager;
+        private readonly Lazy<ITcpListenerAdapter> _tcpListener;
 
-        public Server(Lazy<ITcpListenerAdapter> tcpListener, IMailCommunicator mailCommunicator, IClientManager clientManager)
+        public Server(Lazy<ITcpListenerAdapter> tcpListener, INetworkMessager networkMessager,
+            IClientManager clientManager)
         {
             _tcpListener = tcpListener;
-            _mailCommunicator = mailCommunicator;
+            _networkMessager = networkMessager;
             _clientManager = clientManager;
 
             _clientManager.MessageReceived += (sender, args) =>
@@ -34,11 +37,10 @@ namespace Mailfunnel.SMTP
             {
                 tcpListener.Start();
 
-                AcceptConnectionsAsync(tcpListener, cts.Token);
+                await AcceptConnectionsAsync(tcpListener, cts.Token);
 
                 while (true)
                 {
-
                 }
             }
             finally
@@ -58,7 +60,7 @@ namespace Mailfunnel.SMTP
 
                 connections++;
 
-                await _mailCommunicator.HandleClientAsync(client, connections, token);
+                await _networkMessager.HandleClientAsync(client, connections, token);
             }
         }
     }

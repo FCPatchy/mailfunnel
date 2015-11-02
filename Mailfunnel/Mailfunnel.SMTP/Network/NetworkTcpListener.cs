@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Mailfunnel.SMTP.Contracts;
 
-namespace Mailfunnel.SMTP
+namespace Mailfunnel.SMTP.Network
 {
     public class NetworkTcpListener : ITcpListenerAdapter
     {

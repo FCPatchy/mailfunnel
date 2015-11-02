@@ -1,7 +1,7 @@
 ﻿using System.Threading;
-using Mailfunnel.SMTP.Contracts;
+using Mailfunnel.SMTP.Network;
 
-namespace Mailfunnel.SMTP
+namespace Mailfunnel.SMTP.Clients
 {
     public class Client
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mailfunnel.SMTP
+namespace Mailfunnel.SMTP.Clients
 {
     public interface IClientManager
     {
@@ -9,11 +9,11 @@ namespace Mailfunnel.SMTP
 
     public class MessageReceivedEventArgs
     {
-        public EmailMessage Message { get; private set; }
-
         public MessageReceivedEventArgs(EmailMessage message)
         {
             Message = message;
         }
+
+        public EmailMessage Message { get; private set; }
     }
 }

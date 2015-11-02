@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mailfunnel.SMTP.Contracts
+namespace Mailfunnel.SMTP.Network
 {
     public interface ITcpListenerAdapter
     {

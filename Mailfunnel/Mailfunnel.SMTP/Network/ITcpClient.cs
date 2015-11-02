@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Mailfunnel.SMTP.Contracts
+namespace Mailfunnel.SMTP.Network
 {
     public interface ITcpClient : IDisposable
     {
