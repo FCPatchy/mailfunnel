@@ -16,12 +16,9 @@ namespace Mailfunnel.SMTP.Messages
             if (message.Length >= 4)
             {
                 var command = message.Substring(0, 4);
-                if (Enum.TryParse(command, out smtpCommand))
+                if (Enum.TryParse(command, out smtpCommand) && message.Length > 4)
                 {
-                    if (message.Length > 4)
-                    {
-                        clientMessage.MessageText = message.Substring(5, message.Length - 5);
-                    }
+                    clientMessage.MessageText = message.Substring(5, message.Length - 5);
                 }
                 else
                 {
