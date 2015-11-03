@@ -42,11 +42,6 @@ namespace Mailfunnel.SMTP.Tests
                 throw new NotImplementedException();
             }
 
-            public string GenerateMessage(Message message)
-            {
-                throw new NotImplementedException();
-            }
-
             public SmtpCommand ProcessMessage(byte[] message)
             {
                 return SmtpCommand.Unknown;
