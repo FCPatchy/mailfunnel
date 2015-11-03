@@ -1,4 +1,4 @@
-﻿namespace Mailfunnel.SMTP.Contracts
+﻿namespace Mailfunnel.SMTP
 {
     public interface IServer
     {

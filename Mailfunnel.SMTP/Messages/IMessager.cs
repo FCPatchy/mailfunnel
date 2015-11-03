@@ -7,6 +7,9 @@ namespace Mailfunnel.SMTP.Messages
     {
         event EventHandler<ClientConnectedEventArgs> ClientConnected;
         event EventHandler<ClientMessageReceivedEventArgs> ClientMessageReceived;
-        void SendMessage(Client client, Message greeting);
+        event EventHandler<ClientDisconnectedEventArgs> ClientDisconnected;
+
+        void SendMessage(Client client, IOutboundMessage outboundMessage);
+        void DisconnectClient(Client client);
     }
 }

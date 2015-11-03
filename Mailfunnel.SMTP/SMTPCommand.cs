@@ -1,6 +1,6 @@
 ﻿namespace Mailfunnel.SMTP
 {
-    public enum SMTPCommand
+    public enum SmtpCommand
     {
         Unknown,
         EHLO,

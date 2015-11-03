@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,31 +61,38 @@
     <Compile Include="Clients\Client.cs" />
     <Compile Include="Clients\ClientManager.cs" />
     <Compile Include="Clients\IClientManager.cs" />
-    <Compile Include="Contracts\IMessageSender.cs" />
-    <Compile Include="Contracts\IServer.cs" />
     <Compile Include="EmailMessage.cs" />
+    <Compile Include="IServer.cs" />
     <Compile Include="Message.cs" />
-    <Compile Include="MessageSender.cs" />
+    <Compile Include="Messages\ClientDisconnectedEventArgs.cs" />
     <Compile Include="Messages\ClientConnectedEventArgs.cs" />
     <Compile Include="Messages\ClientMessage.cs" />
     <Compile Include="Messages\ClientMessageReceivedEventArgs.cs" />
+    <Compile Include="Messages\IOutboundMessage.cs" />
     <Compile Include="Messages\IMessageProcessor.cs" />
     <Compile Include="Messages\IMessager.cs" />
     <Compile Include="Messages\MessageProcessor.cs" />
     <Compile Include="Messages\Messager.cs" />
-    <Compile Include="Network\INetworkMessageParser.cs" />
+    <Compile Include="Messages\MessageType.cs" />
+    <Compile Include="Messages\OutboundMessages\OutboundMessageBadSequence.cs" />
+    <Compile Include="Messages\OutboundMessages\OutboundMessageClosingTransmission.cs" />
+    <Compile Include="Messages\OutboundMessages\OutboundMessageGreeting.cs" />
+    <Compile Include="Messages\OutboundMessages\OutboundMessageOK.cs" />
+    <Compile Include="Messages\OutboundMessages\OutboundMessageReadyForData.cs" />
+    <Compile Include="Messages\OutboundMessages\OutboundMessageSessionGreeting.cs" />
     <Compile Include="Network\INetworkMessager.cs" />
     <Compile Include="Network\ITcpClient.cs" />
     <Compile Include="Network\ITcpListenerAdapter.cs" />
+    <Compile Include="Network\NetworkClientDisconnectedEventArgs.cs" />
     <Compile Include="Network\NetworkClientConnectedEventArgs.cs" />
     <Compile Include="Network\NetworkClientMessageReceivedEventArgs.cs" />
     <Compile Include="Network\NetworkMessager.cs" />
     <Compile Include="Network\NetworkTcpListener.cs" />
+    <Compile Include="Network\TcpClientAdapter.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMTPCommand.cs" />
     <Compile Include="SmtpUtilities.cs" />
-    <Compile Include="TcpClientAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,4 +1,4 @@
-﻿using Mailfunnel.SMTP.Contracts;
+﻿using Mailfunnel.SMTP;
 using Microsoft.Practices.Unity;
 
 namespace Mailfunnel

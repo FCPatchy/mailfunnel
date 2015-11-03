@@ -16,13 +16,22 @@ namespace Mailfunnel.SMTP.Messages
 
             _networkMessager.ClientConnected += NetworkClientConnected;
             _networkMessager.ClientMessageReceived += NetworkClientMessageReceived;
+            _networkMessager.ClientDisconnected += NetworkClientDisconnected;
         }
 
         public event EventHandler<ClientConnectedEventArgs> ClientConnected;
+        public event EventHandler<ClientDisconnectedEventArgs> ClientDisconnected;
         public event EventHandler<ClientMessageReceivedEventArgs> ClientMessageReceived;
 
-        public void SendMessage(Client client, Message message)
+        public void SendMessage(Client client, IOutboundMessage outboundMessage)
         {
+            var generatedMessage = _messageProcessor.GenerateMessage(outboundMessage);
+            _networkMessager.SendMessage(client.TcpClient, client.CancellationToken, generatedMessage);
+        }
+
+        public void DisconnectClient(Client client)
+        {
+            _networkMessager.DisconnectClient(client.TcpClient);
         }
 
         private void NetworkClientConnected(object sender, NetworkClientConnectedEventArgs e)
@@ -32,14 +41,20 @@ namespace Mailfunnel.SMTP.Messages
                 ClientConnected(sender, new ClientConnectedEventArgs(e.Client, e.CancellationToken));
         }
 
+        private void NetworkClientDisconnected(object sender, NetworkClientDisconnectedEventArgs e)
+        {
+            // The event is simply piped
+            if (ClientDisconnected != null)
+                ClientDisconnected(sender, new ClientDisconnectedEventArgs(e.ClientHashCode));
+        }
+
         private void NetworkClientMessageReceived(object sender, NetworkClientMessageReceivedEventArgs e)
         {
             if (ClientMessageReceived != null)
             {
                 var clientMessage = _messageProcessor.ProcessMessage(e.MessageText);
 
-                ClientMessageReceived(sender,
-                    new ClientMessageReceivedEventArgs(e.Client, e.CancellationToken, clientMessage));
+                ClientMessageReceived(sender, new ClientMessageReceivedEventArgs(e.Client, e.CancellationToken, clientMessage));
             }
         }
     }

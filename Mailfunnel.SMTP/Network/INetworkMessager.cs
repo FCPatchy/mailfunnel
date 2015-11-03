@@ -8,7 +8,9 @@ namespace Mailfunnel.SMTP.Network
     {
         event EventHandler<NetworkClientConnectedEventArgs> ClientConnected;
         event EventHandler<NetworkClientMessageReceivedEventArgs> ClientMessageReceived;
+        event EventHandler<NetworkClientDisconnectedEventArgs> ClientDisconnected;
         Task HandleClientAsync(ITcpClient client, int connections, CancellationToken token);
         Task SendMessage(ITcpClient client, CancellationToken token, string message);
+        void DisconnectClient(ITcpClient tcpClient);
     }
 }

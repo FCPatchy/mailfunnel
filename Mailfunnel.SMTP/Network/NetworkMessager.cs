@@ -9,15 +9,14 @@ namespace Mailfunnel.SMTP.Network
     {
         public event EventHandler<NetworkClientConnectedEventArgs> ClientConnected;
         public event EventHandler<NetworkClientMessageReceivedEventArgs> ClientMessageReceived;
+        public event EventHandler<NetworkClientDisconnectedEventArgs> ClientDisconnected;
 
         public async Task HandleClientAsync(ITcpClient client, int connections, CancellationToken token)
         {
             using (client)
             {
                 if (ClientConnected != null)
-                {
                     ClientConnected(this, new NetworkClientConnectedEventArgs(client, token));
-                }
 
                 var buf = new byte[4096];
                 var stream = client.GetStream();
@@ -31,18 +30,23 @@ namespace Mailfunnel.SMTP.Network
 
                     // Client timed out
                     if (completedTask == timeoutTask)
+                    {
+                        if (ClientDisconnected != null)
+                            ClientDisconnected(this, new NetworkClientDisconnectedEventArgs(client.ClientIdentifier));
+
                         break;
+                    }
 
                     var amountRead = amountReadTask.Result;
                     if (amountRead == 0) break; // End of stream
 
-                    var messageText = Encoding.UTF8.GetString(buf).Trim();
+                    var resultBytes = new byte[amountRead];
+                    Array.Copy(buf, resultBytes, amountRead);
+
+                    var messageText = Encoding.UTF8.GetString(resultBytes).TrimEnd();
 
                     if (messageText.Length > 0 && ClientMessageReceived != null)
-                    {
-                        ClientMessageReceived(this,
-                            new NetworkClientMessageReceivedEventArgs(client, token, messageText));
-                    }
+                        ClientMessageReceived(this, new NetworkClientMessageReceivedEventArgs(client, token, messageText));
                 }
             }
         }
@@ -52,6 +56,15 @@ namespace Mailfunnel.SMTP.Network
             var bytes = Encoding.UTF8.GetBytes(message);
 
             await client.GetStream().WriteAsync(bytes, 0, bytes.Length, token).ConfigureAwait(false);
+        }
+
+        public void DisconnectClient(ITcpClient tcpClient)
+        {
+            var clientIdentifier = tcpClient.ClientIdentifier;
+            tcpClient.Close();
+
+            if(ClientDisconnected != null)
+                ClientDisconnected(this, new NetworkClientDisconnectedEventArgs(clientIdentifier));
         }
     }
 }

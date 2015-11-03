@@ -15,7 +15,7 @@ namespace Mailfunnel.SMTP.Tests
 
             var msg = msgProcessor.ProcessMessage(rawMessage);
 
-            Assert.AreEqual(SMTPCommand.EHLO, msg.SMTPCommand);
+            Assert.AreEqual(SmtpCommand.EHLO, msg.SMTPCommand);
             Assert.AreEqual("client.example.com", msg.MessageText);
         }
 
@@ -28,7 +28,7 @@ namespace Mailfunnel.SMTP.Tests
 
             var msg = msgProcessor.ProcessMessage(rawMessage);
 
-            Assert.AreEqual(SMTPCommand.Unknown, msg.SMTPCommand);
+            Assert.AreEqual(SmtpCommand.Unknown, msg.SMTPCommand);
             Assert.AreEqual(rawMessage, msg.MessageText);
         }
 
@@ -41,7 +41,7 @@ namespace Mailfunnel.SMTP.Tests
 
             var msg = msgProcessor.ProcessMessage(rawMessage);
 
-            Assert.AreEqual(SMTPCommand.Unknown, msg.SMTPCommand);
+            Assert.AreEqual(SmtpCommand.Unknown, msg.SMTPCommand);
             Assert.AreEqual(rawMessage, msg.MessageText);
         }
 
@@ -54,7 +54,7 @@ namespace Mailfunnel.SMTP.Tests
 
             var msg = msgProcessor.ProcessMessage(rawMessage);
 
-            Assert.AreEqual(SMTPCommand.EHLO, msg.SMTPCommand);
+            Assert.AreEqual(SmtpCommand.EHLO, msg.SMTPCommand);
             Assert.AreEqual(string.Empty, msg.MessageText);
         }
     }

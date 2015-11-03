@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Mailfunnel.SMTP.Clients;
-using Mailfunnel.SMTP.Contracts;
 using Mailfunnel.SMTP.Network;
 
 namespace Mailfunnel.SMTP
@@ -13,8 +12,7 @@ namespace Mailfunnel.SMTP
         private readonly INetworkMessager _networkMessager;
         private readonly Lazy<ITcpListenerAdapter> _tcpListener;
 
-        public Server(Lazy<ITcpListenerAdapter> tcpListener, INetworkMessager networkMessager,
-            IClientManager clientManager)
+        public Server(Lazy<ITcpListenerAdapter> tcpListener, INetworkMessager networkMessager, IClientManager clientManager)
         {
             _tcpListener = tcpListener;
             _networkMessager = networkMessager;
@@ -37,7 +35,7 @@ namespace Mailfunnel.SMTP
             {
                 tcpListener.Start();
 
-                await AcceptConnectionsAsync(tcpListener, cts.Token);
+                AcceptConnectionsAsync(tcpListener, cts.Token);
 
                 while (true)
                 {

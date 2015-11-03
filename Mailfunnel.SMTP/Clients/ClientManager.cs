@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Mailfunnel.SMTP.Messages;
+using Mailfunnel.SMTP.Messages.OutboundMessages;
 
 namespace Mailfunnel.SMTP.Clients
 {
@@ -17,7 +17,9 @@ namespace Mailfunnel.SMTP.Clients
             Mail,
             Rcpt,
             Data,
-            DataTransmission
+            DataTransmission,
+            NoOperation,
+            Quit
         }
 
         /// <summary>
@@ -33,7 +35,7 @@ namespace Mailfunnel.SMTP.Clients
             AwaitingData
         }
 
-        private readonly List<Client> _clients;
+        private readonly Dictionary<int, Client> _clients;
         private readonly Action<Client, string>[,] _fsm;
         private readonly IMessager _messager;
 
@@ -41,22 +43,23 @@ namespace Mailfunnel.SMTP.Clients
         {
             _messager = messager;
 
-            _clients = new List<Client>();
+            _clients = new Dictionary<int, Client>();
 
             // Subscribe to messager events
             _messager.ClientConnected += OnClientConnected;
             _messager.ClientMessageReceived += OnClientMessageReceived;
+            _messager.ClientDisconnected += OnClientDisconnected;
 
             // Event transitions
             _fsm = new Action<Client, string>[,]
             {
-                // Connected     // EHLO    // MAIL      // RCPT      // DATA      // Data transmission
-                {StateConnected, null, null, null, null, null}, // Connected
-                {null, StateEhlo, BadSequence, BadSequence, BadSequence, null}, // AwaitingEhloCommand
-                {null, null, StateMail, BadSequence, BadSequence, BadSequence}, // AwaitingMailCommand
-                {null, null, null, StateRcpt, BadSequence, null}, // AwaitingRcptCommand
-                {null, null, null, StateRcpt, StateData, null}, // AwaitingDataCommand
-                {null, null, null, null, null, StateDataTransmission} // AwaitingData
+                // Connected     // EHLO    // MAIL      // RCPT      // DATA      // Data transmission     // NOOP         // QUIT
+                {StateConnected, null,      null,        null,        null,        null,                    NoOperation,    Quit},  // Connected
+                {null,           StateEhlo, BadSequence, BadSequence, BadSequence, null,                    NoOperation,    Quit},  // AwaitingEhloCommand
+                {null,           null,      StateMail,   BadSequence, BadSequence, BadSequence,             NoOperation,    Quit},  // AwaitingMailCommand
+                {null,           null,      null,        StateRcpt,   BadSequence, null,                    NoOperation,    Quit},  // AwaitingRcptCommand
+                {null,           null,      null,        StateRcpt,   StateData,   null,                    NoOperation,    Quit},  // AwaitingDataCommand
+                {null,           null,      null,        null,        null,        StateDataTransmission,   NoOperation,    Quit}   // AwaitingData
             };
         }
 
@@ -65,13 +68,13 @@ namespace Mailfunnel.SMTP.Clients
         private void StateConnected(Client client, string s)
         {
             client.ClientState = State.AwaitingEhloCommand;
-            _messager.SendMessage(client, Message.Greeting);
+            _messager.SendMessage(client, new OutboundMessageGreeting());
         }
 
         private void StateEhlo(Client client, string s)
         {
             client.ClientState = State.AwaitingMailCommand;
-            _messager.SendMessage(client, Message.OK);
+            _messager.SendMessage(client, new OutboundMessageSessionGreeting(s));
         }
 
         private void StateMail(Client client, string s)
@@ -82,7 +85,7 @@ namespace Mailfunnel.SMTP.Clients
             };
 
             client.ClientState = State.AwaitingRcptCommand;
-            _messager.SendMessage(client, Message.OK);
+            _messager.SendMessage(client, new OutboundMessageOK());
         }
 
         private void StateRcpt(Client client, string s)
@@ -90,13 +93,13 @@ namespace Mailfunnel.SMTP.Clients
             client.Message.Recipients.Add(s);
 
             client.ClientState = State.AwaitingDataCommand;
-            _messager.SendMessage(client, Message.OK);
+            _messager.SendMessage(client, new OutboundMessageOK());
         }
 
         private void StateData(Client client, string s)
         {
             client.ClientState = State.AwaitingData;
-            _messager.SendMessage(client, Message.SendData);
+            _messager.SendMessage(client, new OutboundMessageReadyForData());
         }
 
         private void StateDataTransmission(Client client, string s)
@@ -106,16 +109,13 @@ namespace Mailfunnel.SMTP.Clients
 
             foreach (var line in lines)
             {
-                if (lines.Contains("."))
+                if (line == ".")
                 {
                     // End of transmission
                     client.ClientState = State.AwaitingMailCommand;
-                    _messager.SendMessage(client, Message.OK);
+                    _messager.SendMessage(client, new OutboundMessageOK());
 
-                    if (MessageReceived != null)
-                    {
-                        MessageReceived(this, new MessageReceivedEventArgs(client.Message));
-                    }
+                    MessageReceived?.Invoke(this, new MessageReceivedEventArgs(client.Message));
 
                     return;
                 }
@@ -124,9 +124,20 @@ namespace Mailfunnel.SMTP.Clients
             }
         }
 
+        private void NoOperation(Client client, string commandText)
+        {
+            _messager.SendMessage(client, new OutboundMessageOK());
+        }
+
         private void BadSequence(Client client, string s)
         {
-            _messager.SendMessage(client, Message.BadSequence);
+            _messager.SendMessage(client, new OutboundMessageBadSequence());
+        }
+
+        private void Quit(Client client, string s)
+        {
+            _messager.SendMessage(client, new OutboundMessageClosingTransmission());
+            _messager.DisconnectClient(client);
         }
 
         private void ProcessEvent(Client client, Event e, string commandText = null)
@@ -134,22 +145,28 @@ namespace Mailfunnel.SMTP.Clients
             _fsm[(int) client.ClientState, (int) e].Invoke(client, commandText);
         }
 
-        private void OnClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
+        private void OnClientConnected(object sender, ClientConnectedEventArgs args)
         {
             var client = new Client
             {
-                TcpClient = clientConnectedEventArgs.Client,
-                CancellationToken = clientConnectedEventArgs.CancellationToken
+                TcpClient = args.Client,
+                CancellationToken = args.CancellationToken
             };
 
-            _clients.Add(client);
+            _clients.Add(client.TcpClient.ClientIdentifier, client);
 
             ProcessEvent(client, Event.Connected);
         }
 
+        private void OnClientDisconnected(object sender, ClientDisconnectedEventArgs args)
+        {
+            _clients.Remove(args.ClientIdentifier);
+        }
+
         private void OnClientMessageReceived(object sender, ClientMessageReceivedEventArgs e)
         {
-            var client = _clients.FirstOrDefault(x => x.TcpClient == e.Client);
+            var clientIdentifier = e.Client.ClientIdentifier;
+            var client = _clients[clientIdentifier];
 
             var ev = Event.Connected;
             string commandText = null;
@@ -158,31 +175,40 @@ namespace Mailfunnel.SMTP.Clients
             {
                 // Special case, where we are expecting message data.
                 // In this case, there is no SMTP command
-                //ProcessEvent(Client, Event.DataTransmission, e.MessageText);
+                ProcessEvent(client, Event.DataTransmission, e.ClientMessage.MessageText);
                 return;
             }
 
-            //switch (e.Command)
-            //{
-            //    case SMTPCommand.EHLO:
-            //        ev = Event.Ehlo;
-            //        break;
+            switch (e.ClientMessage.SMTPCommand)
+            {
+                case SmtpCommand.EHLO:
+                    ev = Event.Ehlo;
+                    commandText = e.ClientMessage.MessageText;
+                    break;
 
-            //    case SMTPCommand.MAIL:
-            //        ev = Event.Mail;
-            //        commandText = SmtpUtilities.ExtractEmailAddress(e.MessageText);
-            //        break;
+                case SmtpCommand.MAIL:
+                    ev = Event.Mail;
+                    commandText = SmtpUtilities.ExtractEmailAddress(e.ClientMessage.MessageText);
+                    break;
 
-            //    case SMTPCommand.RCPT:
-            //        ev = Event.Rcpt;
-            //        commandText = SmtpUtilities.ExtractEmailAddress(e.MessageText);
-            //        break;
+                case SmtpCommand.RCPT:
+                    ev = Event.Rcpt;
+                    commandText = SmtpUtilities.ExtractEmailAddress(e.ClientMessage.MessageText);
+                    break;
 
-            //    case SMTPCommand.DATA:
-            //        ev = Event.Data;
-            //        commandText = SmtpUtilities.ExtractEmailAddress(e.MessageText);
-            //        break;
-            //}
+                case SmtpCommand.DATA:
+                    ev = Event.Data;
+                    commandText = SmtpUtilities.ExtractEmailAddress(e.ClientMessage.MessageText);
+                    break;
+
+                case SmtpCommand.NOOP:
+                    ev = Event.NoOperation;
+                    break;
+
+                    case SmtpCommand.QUIT:
+                    ev = Event.Quit;
+                    break;
+            }
 
             ProcessEvent(client, ev, commandText);
         }
