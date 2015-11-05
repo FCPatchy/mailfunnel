@@ -1,0 +1,37 @@
+@import 'bootstrap';
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,700);
+
+@red: #ef233c;
+
+body {
+	background: #edf2f4;
+	font-family: 'Roboto', sans-serif;
+}
+
+.header {
+	.make-md-column(12);
+
+	height: 50px;
+	background: #fff;
+	font-size: 2em;
+	color: @red;
+}
+
+.content {
+	.make-md-column(12);
+}
+
+.mail {
+	.make-md-column(12);
+
+	height: 35px;
+	background: #fff;
+}
+
+.row.no-gutters {
+  & > [class^="col-"],
+  & > [class*=" col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
