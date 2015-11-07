@@ -1,0 +1,6 @@
+{
+  "name": "post-build-hook",
+  "keywords": [
+    "ember-addon"
+  ]
+}
