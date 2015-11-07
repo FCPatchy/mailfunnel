@@ -1,5 +1,4 @@
-﻿
-namespace Mailfunnel.SMTP.Messages
+﻿namespace Mailfunnel.SMTP.Messages
 {
     public class ClientMessage
     {

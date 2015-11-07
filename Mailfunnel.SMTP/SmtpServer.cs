@@ -6,13 +6,14 @@ using Mailfunnel.SMTP.Network;
 
 namespace Mailfunnel.SMTP
 {
-    public class Server : IServer
+    public class SmtpServer : ISmtpServer
     {
         private readonly IClientManager _clientManager;
         private readonly INetworkMessager _networkMessager;
         private readonly Lazy<ITcpListenerAdapter> _tcpListener;
 
-        public Server(Lazy<ITcpListenerAdapter> tcpListener, INetworkMessager networkMessager, IClientManager clientManager)
+        public SmtpServer(Lazy<ITcpListenerAdapter> tcpListener, INetworkMessager networkMessager,
+            IClientManager clientManager)
         {
             _tcpListener = tcpListener;
             _networkMessager = networkMessager;

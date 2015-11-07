@@ -13,7 +13,7 @@ namespace Mailfunnel
         {
             IUnityContainer container = new UnityContainer();
 
-            container.RegisterType<IServer, Server>();
+            container.RegisterType<ISmtpServer, SmtpServer>();
             container.RegisterType<ITcpListenerAdapter, NetworkTcpListener>(new ContainerControlledLifetimeManager(), new InjectionConstructor(IPAddress.Any, 25));
             container.RegisterType<IMessager, Messager>();
             container.RegisterType<IClientManager, ClientManager>(new ContainerControlledLifetimeManager());

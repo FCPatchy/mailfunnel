@@ -1,8 +1,8 @@
 ﻿namespace Mailfunnel.SMTP.Messages.OutboundMessages
 {
     /// <summary>
-    /// Message sent out when client
-    /// establishes a connection to the server
+    ///     Message sent out when client
+    ///     establishes a connection to the server
     /// </summary>
     public class OutboundMessageGreeting : IOutboundMessage
     {

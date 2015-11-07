@@ -46,7 +46,8 @@ namespace Mailfunnel.SMTP.Network
                     var messageText = Encoding.UTF8.GetString(resultBytes).TrimEnd();
 
                     if (messageText.Length > 0 && ClientMessageReceived != null)
-                        ClientMessageReceived(this, new NetworkClientMessageReceivedEventArgs(client, token, messageText));
+                        ClientMessageReceived(this,
+                            new NetworkClientMessageReceivedEventArgs(client, token, messageText));
                 }
             }
         }
@@ -63,7 +64,7 @@ namespace Mailfunnel.SMTP.Network
             var clientIdentifier = tcpClient.ClientIdentifier;
             tcpClient.Close();
 
-            if(ClientDisconnected != null)
+            if (ClientDisconnected != null)
                 ClientDisconnected(this, new NetworkClientDisconnectedEventArgs(clientIdentifier));
         }
     }

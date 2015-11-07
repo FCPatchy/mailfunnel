@@ -74,8 +74,15 @@
       <Project>{0674ED19-58B1-4E3D-9FCE-DBAF52C89A61}</Project>
       <Name>Mailfunnel.SMTP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mailfunnel.Web\Mailfunnel.Web.csproj">
+      <Project>{eccf20b5-0443-4398-a3a9-4d0954c9ca9f}</Project>
+      <Name>Mailfunnel.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)web\dist" "$(TargetDir)app" /I /E /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -6,13 +6,8 @@ namespace Mailfunnel.SMTP.Network
 {
     public class NetworkTcpListener : ITcpListenerAdapter
     {
-        private int clientIdentifierCounter = 0;
         private readonly TcpListener _tcpListener;
-
-        private int GetClientIdentifier()
-        {
-            return clientIdentifierCounter++;
-        }
+        private int clientIdentifierCounter;
 
         public NetworkTcpListener(IPAddress ipAddress, int port)
         {
@@ -34,6 +29,11 @@ namespace Mailfunnel.SMTP.Network
             var tcpClient = await _tcpListener.AcceptTcpClientAsync();
 
             return new TcpClientAdapter(GetClientIdentifier(), tcpClient);
+        }
+
+        private int GetClientIdentifier()
+        {
+            return clientIdentifierCounter++;
         }
     }
 }

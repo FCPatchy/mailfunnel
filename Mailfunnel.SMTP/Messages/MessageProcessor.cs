@@ -5,8 +5,8 @@ namespace Mailfunnel.SMTP.Messages
     public class MessageProcessor : IMessageProcessor
     {
         /// <summary>
-        /// Process an inbound network message.
-        /// Returns an object containing the SMTP command and message text, if any.
+        ///     Process an inbound network message.
+        ///     Returns an object containing the SMTP command and message text, if any.
         /// </summary>
         /// <param name="message">Message to process</param>
         /// <returns></returns>
@@ -54,8 +54,8 @@ namespace Mailfunnel.SMTP.Messages
         }
 
         /// <summary>
-        /// Generate a text message from the provided IOutboundMessage implementation.
-        /// The generated text message can then be forwarded to the output stream.
+        ///     Generate a text message from the provided IOutboundMessage implementation.
+        ///     The generated text message can then be forwarded to the output stream.
         /// </summary>
         /// <param name="message">Message</param>
         /// <returns></returns>

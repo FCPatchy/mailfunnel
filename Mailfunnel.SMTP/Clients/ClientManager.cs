@@ -54,12 +54,14 @@ namespace Mailfunnel.SMTP.Clients
             _fsm = new Action<Client, string>[,]
             {
                 // Connected     // EHLO    // MAIL      // RCPT      // DATA      // Data transmission     // NOOP         // QUIT
-                {StateConnected, null,      null,        null,        null,        null,                    NoOperation,    Quit},  // Connected
-                {null,           StateEhlo, BadSequence, BadSequence, BadSequence, null,                    NoOperation,    Quit},  // AwaitingEhloCommand
-                {null,           null,      StateMail,   BadSequence, BadSequence, BadSequence,             NoOperation,    Quit},  // AwaitingMailCommand
-                {null,           null,      null,        StateRcpt,   BadSequence, null,                    NoOperation,    Quit},  // AwaitingRcptCommand
-                {null,           null,      null,        StateRcpt,   StateData,   null,                    NoOperation,    Quit},  // AwaitingDataCommand
-                {null,           null,      null,        null,        null,        StateDataTransmission,   NoOperation,    Quit}   // AwaitingData
+                {StateConnected, null, null, null, null, null, NoOperation, Quit}, // Connected
+                {null, StateEhlo, BadSequence, BadSequence, BadSequence, null, NoOperation, Quit},
+                // AwaitingEhloCommand
+                {null, null, StateMail, BadSequence, BadSequence, BadSequence, NoOperation, Quit},
+                // AwaitingMailCommand
+                {null, null, null, StateRcpt, BadSequence, null, NoOperation, Quit}, // AwaitingRcptCommand
+                {null, null, null, StateRcpt, StateData, null, NoOperation, Quit}, // AwaitingDataCommand
+                {null, null, null, null, null, StateDataTransmission, NoOperation, Quit} // AwaitingData
             };
         }
 
@@ -205,7 +207,7 @@ namespace Mailfunnel.SMTP.Clients
                     ev = Event.NoOperation;
                     break;
 
-                    case SmtpCommand.QUIT:
+                case SmtpCommand.QUIT:
                     ev = Event.Quit;
                     break;
             }

@@ -8,13 +8,13 @@ namespace Mailfunnel.SMTP.Network
     {
         private readonly TcpClient _tcpClient;
 
-        public int ClientIdentifier { get; }
-
         public TcpClientAdapter(int clientIdentifier, TcpClient tcpClient)
         {
             _tcpClient = tcpClient;
             ClientIdentifier = clientIdentifier;
         }
+
+        public int ClientIdentifier { get; }
 
         public void Dispose()
         {

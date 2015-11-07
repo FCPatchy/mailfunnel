@@ -1,6 +1,6 @@
 ﻿namespace Mailfunnel.SMTP
 {
-    public interface IServer
+    public interface ISmtpServer
     {
         void Listen();
     }

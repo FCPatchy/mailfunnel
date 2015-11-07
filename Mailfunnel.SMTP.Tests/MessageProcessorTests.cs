@@ -20,9 +20,9 @@ namespace Mailfunnel.SMTP.Tests
         }
 
         [Test]
-        public void ProcessMessage_returns_message_when_no_command_given()
+        public void ProcessMessage_Returns_Message_When_Message_Too_Short_For_Command()
         {
-            const string rawMessage = "From: sender@example.com\r\nTo: recipient@example.com\r\n";
+            const string rawMessage = "ab";
 
             var msgProcessor = new MessageProcessor();
 
@@ -33,9 +33,9 @@ namespace Mailfunnel.SMTP.Tests
         }
 
         [Test]
-        public void ProcessMessage_Returns_Message_When_Message_Too_Short_For_Command()
+        public void ProcessMessage_returns_message_when_no_command_given()
         {
-            const string rawMessage = "ab";
+            const string rawMessage = "From: sender@example.com\r\nTo: recipient@example.com\r\n";
 
             var msgProcessor = new MessageProcessor();
 

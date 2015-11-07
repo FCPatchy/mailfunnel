@@ -1,31 +1,75 @@
 @import 'bootstrap';
-@import url(https://fonts.googleapis.com/css?family=Roboto:100,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto:100,400,700);
 
 @red: #ef233c;
 
 body {
 	background: #edf2f4;
 	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
 }
 
 .header {
 	.make-md-column(12);
 
+	margin-bottom: 35px;
+	padding-top: 5px;
 	height: 50px;
 	background: #fff;
 	font-size: 2em;
+	font-weight: 100;
 	color: @red;
+	.box-shadow(0 1px 3px #e4e9ea)
 }
 
 .content {
 	.make-md-column(12);
+
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 .mail {
-	.make-md-column(12);
+	.make-row();
 
 	height: 35px;
 	background: #fff;
+	margin-bottom: 1px;
+
+	.tab {
+		float: left;
+
+		position: relative;
+		width: 2px;
+		background: #90a959;
+		height: 100%;
+		opacity: .4;
+	}
+
+	.from {
+		.make-md-column(4);
+
+		padding-top: 8px;
+	}
+
+	.subject {
+		.make-md-column(4);
+
+		padding-top: 8px;
+	}
+
+	.received {
+		.make-md-column(3);
+
+		padding-top: 8px;
+		text-align: right;
+	}
+
+	&:hover {
+		.tab {
+			opacity: 1;
+		}
+	}
 }
 
 .row.no-gutters {

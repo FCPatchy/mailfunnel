@@ -54,7 +54,8 @@ namespace Mailfunnel.SMTP.Messages
             {
                 var clientMessage = _messageProcessor.ProcessMessage(e.MessageText);
 
-                ClientMessageReceived(sender, new ClientMessageReceivedEventArgs(e.Client, e.CancellationToken, clientMessage));
+                ClientMessageReceived(sender,
+                    new ClientMessageReceivedEventArgs(e.Client, e.CancellationToken, clientMessage));
             }
         }
     }
