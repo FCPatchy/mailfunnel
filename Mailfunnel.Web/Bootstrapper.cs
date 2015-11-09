@@ -9,7 +9,8 @@ namespace Mailfunnel.Web
         {
             base.ConfigureConventions(nancyConventions);
 
-            nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("assets", @"app/assets"));
+            nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("assets",
+                @"app/assets"));
         }
     }
 }
