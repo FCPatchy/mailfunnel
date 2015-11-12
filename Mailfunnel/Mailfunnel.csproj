@@ -51,6 +51,14 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Nancy, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.1.4.1\lib\net40\Nancy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy.Bootstrappers.Unity, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Mailfunnel.Web\Nancy.Bootstrappers.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,14 +70,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="IInitialiser.cs" />
+    <Compile Include="IEmailRecorder.cs" />
+    <Compile Include="Initialiser.cs" />
+    <Compile Include="EmailRecorder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mailfunnel.Data\Mailfunnel.Data.csproj">
+      <Project>{C06F2179-F40B-420E-ADAD-AC7820F4DC15}</Project>
+      <Name>Mailfunnel.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mailfunnel.SMTP\Mailfunnel.SMTP.csproj">
       <Project>{0674ED19-58B1-4E3D-9FCE-DBAF52C89A61}</Project>
       <Name>Mailfunnel.SMTP</Name>

@@ -18,12 +18,12 @@ namespace Mailfunnel.Data.Tests
             // Act
             var x = repo.Add(new EmailEntity
             {
-                Name = "Test"
+                From = "Test"
             });
 
             var y = repo.Add(new EmailEntity
             {
-                Name = "Test 2"
+                From = "Test 2"
             });
 
             // Assert

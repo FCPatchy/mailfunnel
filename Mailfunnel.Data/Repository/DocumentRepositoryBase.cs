@@ -1,4 +1,5 @@
-﻿using System.Data.Unqlite;
+﻿using System.Collections.Generic;
+using System.Data.Unqlite;
 using Newtonsoft.Json;
 
 namespace Mailfunnel.Data.Repository
@@ -19,8 +20,11 @@ namespace Mailfunnel.Data.Repository
 
             var entityJson = JsonConvert.SerializeObject(entity);
 
-            UnqliteDb.ExecuteJx9(string.Format("if(!db_exists('{0}')){{ $rc = db_create('{0}'); }}  $zRec = {1}; $rc = db_store('{0}', $zRec); print $zRec;", Collection, entityJson),
-                                 s => { returnEntity = JsonConvert.DeserializeObject<T>(s); });
+            UnqliteDb.ExecuteJx9(
+                string.Format(
+                    "if(!db_exists('{0}')){{ $rc = db_create('{0}'); }}  $zRec = {1}; $rc = db_store('{0}', $zRec); print $zRec;",
+                    Collection, entityJson),
+                s => { returnEntity = JsonConvert.DeserializeObject<T>(s); });
 
             return returnEntity;
         }
@@ -28,6 +32,16 @@ namespace Mailfunnel.Data.Repository
         public virtual void Open(string fileName, Unqlite_Open mode)
         {
             UnqliteDb.Open(fileName, mode);
+        }
+
+        public virtual IEnumerable<T> GetAll()
+        {
+            IEnumerable<T> vals = null;
+
+            UnqliteDb.ExecuteJx9(string.Format("print db_fetch_all('{0}');", Collection),
+                s => { vals = JsonConvert.DeserializeObject<IEnumerable<T>>(s); });
+
+            return vals;
         }
 
         #region IDisposable Support

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Mailfunnel.SMTP.Messages;
 using Mailfunnel.SMTP.Messages.OutboundMessages;
+using Mailfunnel.SMTP.MIME;
 
 namespace Mailfunnel.SMTP.Clients
 {
@@ -38,10 +39,12 @@ namespace Mailfunnel.SMTP.Clients
         private readonly Dictionary<int, Client> _clients;
         private readonly Action<Client, string>[,] _fsm;
         private readonly IMessager _messager;
+        private readonly IMimeParser _mimeParser;
 
-        public ClientManager(IMessager messager)
+        public ClientManager(IMessager messager, IMimeParser mimeParser)
         {
             _messager = messager;
+            _mimeParser = mimeParser;
 
             _clients = new Dictionary<int, Client>();
 
@@ -116,6 +119,9 @@ namespace Mailfunnel.SMTP.Clients
                     // End of transmission
                     client.ClientState = State.AwaitingMailCommand;
                     _messager.SendMessage(client, new OutboundMessageOK());
+
+                    // Parse the message
+                    _mimeParser.ParseMessage(client.Message);
 
                     MessageReceived?.Invoke(this, new MessageReceivedEventArgs(client.Message));
 

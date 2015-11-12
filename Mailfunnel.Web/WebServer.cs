@@ -1,16 +1,15 @@
 ﻿using System;
+using Nancy.Bootstrapper;
 using Nancy.Hosting.Self;
 
 namespace Mailfunnel.Web
 {
-    public class WebServer
+    public class WebServer : IWebServer
     {
         private readonly NancyHost _nancyHost;
 
-        public WebServer()
+        public WebServer(INancyBootstrapper bootstrapper)
         {
-            var bootstrapper = new Bootstrapper();
-
             _nancyHost = new NancyHost(new Uri("http://localhost:1234"), bootstrapper, new HostConfiguration
             {
                 RewriteLocalhost = false

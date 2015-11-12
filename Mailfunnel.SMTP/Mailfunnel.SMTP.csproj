@@ -46,9 +46,14 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MimeKitLite, Version=1.2.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKitLite.1.2.14.0\lib\net45\MimeKitLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,6 +83,8 @@
     <Compile Include="Messages\OutboundMessages\OutboundMessageOK.cs" />
     <Compile Include="Messages\OutboundMessages\OutboundMessageReadyForData.cs" />
     <Compile Include="Messages\OutboundMessages\OutboundMessageSessionGreeting.cs" />
+    <Compile Include="MIME\IMimeParser.cs" />
+    <Compile Include="MIME\MimeParser.cs" />
     <Compile Include="Network\INetworkMessager.cs" />
     <Compile Include="Network\ITcpClient.cs" />
     <Compile Include="Network\ITcpListenerAdapter.cs" />

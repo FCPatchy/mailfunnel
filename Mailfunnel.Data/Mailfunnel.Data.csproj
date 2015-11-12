@@ -58,6 +58,7 @@
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="Repository\IDocumentEntity.cs" />
     <Compile Include="Repository\DocumentRepositoryBase.cs" />
+    <Compile Include="Repository\IEmailRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

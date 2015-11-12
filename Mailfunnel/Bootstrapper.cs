@@ -1,9 +1,13 @@
 ﻿using System.Net;
+using Mailfunnel.Data.Repository;
 using Mailfunnel.SMTP;
 using Mailfunnel.SMTP.Clients;
 using Mailfunnel.SMTP.Messages;
+using Mailfunnel.SMTP.MIME;
 using Mailfunnel.SMTP.Network;
+using Mailfunnel.Web;
 using Microsoft.Practices.Unity;
+using Nancy.Bootstrapper;
 
 namespace Mailfunnel
 {
@@ -13,9 +17,15 @@ namespace Mailfunnel
         {
             IUnityContainer container = new UnityContainer();
 
+            container.RegisterType<IInitialiser, Initialiser>();
+            container.RegisterType<IEmailRecorder, EmailRecorder>();
+            container.RegisterType<IWebServer, WebServer>();
             container.RegisterType<ISmtpServer, SmtpServer>();
+            container.RegisterType<INancyBootstrapper, Web.Bootstrapper>();
             container.RegisterType<ITcpListenerAdapter, NetworkTcpListener>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(IPAddress.Any, 25));
+            container.RegisterType<IEmailRepository, EmailRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMimeParser, MimeParser>();
             container.RegisterType<IMessager, Messager>();
             container.RegisterType<IClientManager, ClientManager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMessageProcessor, MessageProcessor>();

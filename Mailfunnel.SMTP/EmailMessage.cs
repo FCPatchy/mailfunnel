@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Mailfunnel.SMTP
 {
@@ -14,6 +15,8 @@ namespace Mailfunnel.SMTP
             set { _recipients = value; }
         }
 
+        public string Subject { get; set; }
         public string Message { get; set; }
+        public DateTimeOffset Date { get; set; }
     }
 }

@@ -1,23 +1,13 @@
-﻿using Nancy;
+﻿using Mailfunnel.Data.Repository;
+using Nancy;
 
 namespace Mailfunnel.Web.Modules
 {
     public class AppModule : NancyModule
     {
-        public AppModule() : base("/app")
+        public AppModule(IEmailRepository emailRepository) : base("/app")
         {
-            Get["/mails"] = _ => Response.AsJson(new
-            {
-                mails = new[]
-                {
-                    new
-                    {
-                        from = "someone@somewhere.com",
-                        subject = "hey there",
-                        dateReceived = "Thursday, 2:31 PM"
-                    }
-                }
-            });
+            Get["/mails"] = _ => Response.AsJson(new MailsResponse { Emails = emailRepository.GetAll() });
         }
     }
 }

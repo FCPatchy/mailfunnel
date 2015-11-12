@@ -21,10 +21,11 @@ namespace Mailfunnel.SMTP
 
             _clientManager.MessageReceived += (sender, args) =>
             {
-                Console.WriteLine("We have a message!!!!");
-                var y = args.Message;
+                OnMessageReceived(args);
             };
         }
+
+        public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         public async void Listen()
         {
@@ -61,6 +62,11 @@ namespace Mailfunnel.SMTP
 
                 await _networkMessager.HandleClientAsync(client, connections, token);
             }
+        }
+
+        protected virtual void OnMessageReceived(MessageReceivedEventArgs e)
+        {
+            MessageReceived?.Invoke(this, e);
         }
     }
 }

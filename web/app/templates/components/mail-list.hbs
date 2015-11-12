@@ -1,10 +1,10 @@
-{{#each mails as |mail|}}
+{{#each emails}}
 <div class="mail">
 	<div class="tab"></div>
 	<div class="select"></div>
-	<div class="from">{{mail.from}}</div>
-	<div class="subject">{{mail.subject}}</div>
-	<div class="received">{{mail.dateReceived}}</div>
+	<div class="from">{{from}}</div>
+	<div class="subject">{{subject}}</div>
+	<div class="received">{{date}}</div>
 </div>
 {{/each}}
 {{yield}}
