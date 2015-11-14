@@ -1,13 +1,16 @@
-﻿using Mailfunnel.Data.Repository;
+﻿using Mailfunnel.Data.Entities;
+using Mailfunnel.Data.Repository;
 using Nancy;
 
 namespace Mailfunnel.Web.Modules
 {
     public class AppModule : NancyModule
     {
-        public AppModule(IEmailRepository emailRepository) : base("/app")
+        public AppModule(IDocumentRepository<EmailEntity> emailRepository) : base("/app")
         {
-            Get["/mails"] = _ => Response.AsJson(new MailsResponse { Emails = emailRepository.GetAll() });
+            Get["/mail"] = _ => new MailsResponse { Emails = emailRepository.GetAll() };
+
+            Get["/mail/{id}"] = _ => emailRepository.Get(_.id);
         }
     }
 }

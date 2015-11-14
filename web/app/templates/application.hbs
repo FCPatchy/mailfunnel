@@ -5,10 +5,7 @@
 			</div>
 	</div>
 	<div class="row">
-		<div class="content">
-			{{mail-list emails=model.emails}}
-		</div>
+		{{mail-list emails=model.emails showEmail=(action "showEmail") detailsShown=detailsShown}}
+		{{outlet}}
 	</div>
 </div>
-
-{{outlet}}

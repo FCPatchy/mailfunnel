@@ -20,13 +20,28 @@ namespace Mailfunnel.Data.Repository
 
             var entityJson = JsonConvert.SerializeObject(entity);
 
-            UnqliteDb.ExecuteJx9(
+            var success = UnqliteDb.ExecuteJx9(
                 string.Format(
                     "if(!db_exists('{0}')){{ $rc = db_create('{0}'); }}  $zRec = {1}; $rc = db_store('{0}', $zRec); print $zRec;",
                     Collection, entityJson),
                 s => { returnEntity = JsonConvert.DeserializeObject<T>(s); });
 
+            if (success)
+                UnqliteDb.Commit();
+
             return returnEntity;
+        }
+
+        public T Get(long id)
+        {
+            T val = default(T);
+
+            UnqliteDb.ExecuteJx9(string.Format("print db_fetch_by_id('{0}', {1});", Collection, id), s =>
+            {
+                val = JsonConvert.DeserializeObject<T>(s);
+            });
+
+            return val;
         }
 
         public virtual void Open(string fileName, Unqlite_Open mode)
@@ -38,8 +53,10 @@ namespace Mailfunnel.Data.Repository
         {
             IEnumerable<T> vals = null;
 
-            UnqliteDb.ExecuteJx9(string.Format("print db_fetch_all('{0}');", Collection),
-                s => { vals = JsonConvert.DeserializeObject<IEnumerable<T>>(s); });
+            UnqliteDb.ExecuteJx9(string.Format("print db_fetch_all('{0}');", Collection), s =>
+            {
+                vals = JsonConvert.DeserializeObject<IEnumerable<T>>(s);
+            });
 
             return vals;
         }

@@ -110,10 +110,12 @@ namespace Mailfunnel.SMTP.Clients
         private void StateDataTransmission(Client client, string s)
         {
             // Check if the terminating sequence is present
-            var lines = s.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+            var lines = s.Split(new[] {"\r\n"}, StringSplitOptions.None);
 
             foreach (var line in lines)
             {
+                client.Message.Message += line + "\r\n";
+
                 if (line == ".")
                 {
                     // End of transmission
@@ -127,8 +129,6 @@ namespace Mailfunnel.SMTP.Clients
 
                     return;
                 }
-
-                client.Message.Message += line + "\r\n";
             }
         }
 

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
+using Nancy;
+using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Unity;
 using Nancy.Conventions;
 
@@ -17,13 +19,22 @@ namespace Mailfunnel.Web
         {
             base.ConfigureConventions(nancyConventions);
 
-            nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("assets",
-                @"app/assets"));
+            nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("assets", @"app/assets"));
         }
 
         protected override IUnityContainer GetApplicationContainer()
         {
             return _container;
+        }
+
+        protected override void RequestStartup(IUnityContainer container, IPipelines pipelines, NancyContext context)
+        {
+            pipelines.AfterRequest.AddItemToEndOfPipeline(nancyContext =>
+            {
+                nancyContext.Response.WithHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+            });
+
+            base.RequestStartup(container, pipelines, context);
         }
     }
 }

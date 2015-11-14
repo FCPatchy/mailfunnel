@@ -7,10 +7,10 @@ namespace Mailfunnel
 {
     public class EmailRecorder : IEmailRecorder
     {
-        private readonly IEmailRepository _emailRepository;
+        private readonly IDocumentRepository<EmailEntity> _emailRepository;
         private readonly ISmtpServer _smtpServer;
 
-        public EmailRecorder(IEmailRepository emailRepository, ISmtpServer smtpServer)
+        public EmailRecorder(IDocumentRepository<EmailEntity> emailRepository, ISmtpServer smtpServer)
         {
             _emailRepository = emailRepository;
             _smtpServer = smtpServer;

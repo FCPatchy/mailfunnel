@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Mailfunnel.Data.Entities;
 using Mailfunnel.Data.Repository;
 using Mailfunnel.SMTP;
 using Mailfunnel.SMTP.Clients;
@@ -22,9 +23,8 @@ namespace Mailfunnel
             container.RegisterType<IWebServer, WebServer>();
             container.RegisterType<ISmtpServer, SmtpServer>();
             container.RegisterType<INancyBootstrapper, Web.Bootstrapper>();
-            container.RegisterType<ITcpListenerAdapter, NetworkTcpListener>(new ContainerControlledLifetimeManager(),
-                new InjectionConstructor(IPAddress.Any, 25));
-            container.RegisterType<IEmailRepository, EmailRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ITcpListenerAdapter, NetworkTcpListener>(new ContainerControlledLifetimeManager(), new InjectionConstructor(IPAddress.Any, 25));
+            container.RegisterType<IDocumentRepository<EmailEntity>, EmailRepository>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMimeParser, MimeParser>();
             container.RegisterType<IMessager, Messager>();
             container.RegisterType<IClientManager, ClientManager>(new ContainerControlledLifetimeManager());

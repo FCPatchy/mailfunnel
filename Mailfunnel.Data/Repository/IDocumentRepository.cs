@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Unqlite;
 
 namespace Mailfunnel.Data.Repository
@@ -9,5 +10,7 @@ namespace Mailfunnel.Data.Repository
         string Collection { get; }
         void Open(string fileName, Unqlite_Open mode);
         T Add(T entity);
+        T Get(long id);
+        IEnumerable<T> GetAll();
     }
 }

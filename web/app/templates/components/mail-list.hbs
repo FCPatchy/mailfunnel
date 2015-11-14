@@ -1,10 +1,12 @@
-{{#each emails}}
-<div class="mail">
-	<div class="tab"></div>
-	<div class="select"></div>
-	<div class="from">{{from}}</div>
-	<div class="subject">{{subject}}</div>
-	<div class="received">{{date}}</div>
+<div class="content {{if detailsShown 'halfsize'}}">
+	{{#each emails as |email|}}
+	<div class="mail" {{action 'select' email}}>
+		<div class="tab"></div>
+		<div class="select"></div>
+		<div class="from">{{email.from}}</div>
+		<div class="subject">{{email.subject}}</div>
+		<div class="received">{{format-date email.date}}</div>
+	</div>
+	{{/each}}
 </div>
-{{/each}}
 {{yield}}

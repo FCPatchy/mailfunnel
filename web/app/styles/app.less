@@ -1,12 +1,19 @@
 @import 'bootstrap';
 @import url(http://fonts.googleapis.com/css?family=Roboto:100,400,700);
+@import 'normalize';
 
 @red: #ef233c;
+@dark-gray: #292a2a;
 
 body {
 	background: #edf2f4;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
+}
+
+/* Make ember actions 'clickable' elements */
+[data-ember-action] {
+  cursor: pointer;
 }
 
 .header {
@@ -22,56 +29,7 @@ body {
 	.box-shadow(0 1px 3px #e4e9ea)
 }
 
-.content {
-	.make-md-column(12);
-
-	padding-left: 30px;
-	padding-right: 30px;
-}
-
-.mail {
-	.make-row();
-
-	height: 35px;
-	background: #fff;
-	margin-bottom: 1px;
-	cursor: pointer;
-
-	.tab {
-		float: left;
-
-		position: relative;
-		width: 2px;
-		background: #90a959;
-		height: 100%;
-		opacity: .4;
-	}
-
-	.from {
-		.make-md-column(4);
-
-		padding-top: 8px;
-	}
-
-	.subject {
-		.make-md-column(4);
-
-		padding-top: 8px;
-	}
-
-	.received {
-		.make-md-column(3);
-
-		padding-top: 8px;
-		text-align: right;
-	}
-
-	&:hover {
-		.tab {
-			opacity: 1;
-		}
-	}
-}
+@import 'mail';
 
 .row.no-gutters {
   & > [class^="col-"],
