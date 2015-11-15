@@ -13,6 +13,7 @@
     "loader.js": "ember-cli/loader.js#3.2.1",
     "qunit": "~1.18.0",
     "bootstrap": "~3.3.5",
-    "moment": "momentjs#~2.10.6"
+    "moment": "momentjs#~2.10.6",
+    "font-awesome": "fontawesome#~4.4.0"
   }
 }

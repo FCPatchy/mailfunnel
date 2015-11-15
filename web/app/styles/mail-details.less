@@ -1,0 +1,44 @@
+.mail-details {
+	.make-md-column(6);
+
+	.transition(opacity 0.2s ease);
+
+	background: #fff;
+	padding-top: 5px;
+	padding-bottom: 5px;
+
+	&.transparent {
+		opacity: 0;
+	}
+
+	.toolbar {
+		text-align: right;
+		float: right;
+		background: @color-tertiary;
+		border-radius: 3px;
+		padding: 2px 6px;
+
+		i {
+			color: @color-light;
+			font-size: 22px;
+
+			&:hover {
+				color: @red;
+			}
+		}
+
+
+	}
+	
+
+	.subject {
+		font-size: 20px;
+	}
+
+	.body {
+
+		margin-top: 25px;
+
+		.normalize() !important;
+	}
+}

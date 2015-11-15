@@ -1,4 +1,8 @@
-<div class="mail-details">
+<div class="mail-details transparent">
+	<div class="toolbar">
+			{{toolbar-button icon="code" tooltip="View headers"}} {{!-- action=(action 'view-headers')--}}
+			{{toolbar-button icon="trash" tooltip="Delete"}} {{!-- action 'delete' --}}
+	</div>
 	<div class="from">{{mail.from}}</div>
 	<div class="subject">{{mail.subject}}</div>
 	<div class="body">{{{mail.messageBody}}}</div>

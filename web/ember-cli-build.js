@@ -10,7 +10,22 @@ module.exports = function(defaults) {
     }
   });
 
+  // MomentJS
   app.import('bower_components/moment/moment.js');
+  // Bootstrap components
+  app.import('bower_components/bootstrap/js/tooltip.js');
+
+  // FontAwesome
+  var fontsDir = 'assets/fonts';
+  app.import('bower_components/font-awesome/fonts/fontawesome-webfont.ttf', {
+    destDir: fontsDir
+  });
+  app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff', {
+    destDir: fontsDir
+  });
+  app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff2', {
+    destDir: fontsDir
+  });
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

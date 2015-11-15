@@ -1,34 +1,31 @@
 .content {
 	.make-md-column(12);
+	.transition(width 0.2s ease);
 
 	&.halfsize {
 		.make-md-column(6);
-	}
 
-	&, &.halfsize {
 		padding-left: 30px;
 		padding-right: 30px;
 	}
+
+	// &, &.halfsize {
+	// 	padding-left: 30px;
+	// 	padding-right: 30px;
+	// }
 }
 
 .content {
+
+	padding-left: 25px;
+	padding-right: 25px;
+
 	.mail {
 		.make-row();
 
 		height: 35px;
-		background: #fff;
+		background-color: @white;
 		margin-bottom: 1px;
-
-		.tab {
-			float: left;
-
-			position: relative;
-			margin-right: -2px;
-			width: 2px;
-			background: #90a959;
-			height: 100%;
-			opacity: .4;
-		}
 
 		.from,
 		.subject {
@@ -45,10 +42,15 @@
 		}
 
 		&:hover {
-			.tab {
-				opacity: 1;
-			}
+			background: lighten(@color-dark, 20%);
+			color: @white;
 		}
+	}
+
+	.ember-view.selected .mail {
+		background-color: @color-dark;
+		color: @white;
+		.transition(background-color 0.1s ease);
 	}
 
 	&.halfsize .mail {
@@ -58,30 +60,12 @@
 
 		.subject {
 			.make-md-column(6);
+			.make-sm-column(5);
 		}
 
 		.received {
 			.make-md-column(2);
+			.make-sm-column(3);
 		}
-	}
-}
-
-.mail-details {
-	.make-md-column(6);
-
-	background: #fff;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	border-left: 3px solid @dark-gray;
-
-	.subject {
-		font-size: 20px;
-	}
-
-	.body {
-
-		margin-top: 25px;
-
-		.normalize() !important;
 	}
 }

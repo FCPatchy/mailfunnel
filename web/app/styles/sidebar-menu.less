@@ -1,0 +1,46 @@
+.sidebar-menu {
+	height: 100%;
+	background: darken(@color-primary, 30%);
+	padding-top: 35px;
+
+	.nav-pills {
+		> li {
+			&.active {
+
+				> a {
+					background-color: darken(@color-primary, 40%);
+				}
+
+				&:after {
+					content: ' ';
+					position: absolute;
+					left: -6px;
+					top: 14px;
+					background-color: @red;
+					display: block;
+					width: 10px;
+					height: 10px;
+					.rotate(45deg);
+				}
+			}
+
+			> a {
+				border-radius: 0;
+				background: darken(@color-primary, 30%);
+				color: @white;
+
+				&:hover {
+					background-color: darken(@color-primary, 40%);
+				}
+
+
+				.icon-container {
+			    background: #181F23;
+					padding: 5px;
+					border-radius: 2px;
+					margin-right: 5px;
+				}
+			}
+		}
+	}
+}

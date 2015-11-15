@@ -1,11 +1,36 @@
-<div class="container-fluid">
-	<div class="row no-gutters">
-			<div class="header">
+<div class="main-container">
+	<div class="header">
+			<div class="header-logo">
+				<div class="logo"></div>
 				Mailfunnel
 			</div>
+			<div class="header-tools">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="input-group search">
+					      <input type="text" class="form-control" placeholder="Search for...">
+					      <span class="input-group-btn">
+					        <button class="btn btn-default" type="button">
+					        	<i class="fa fa-search"></i>
+					        </button>
+					      </span>
+					    </div><!-- /input-group -->
+						</div>
+						<div class="tools">
+							{{toolbar-button icon="cog" tooltip="Settings"}}
+						</div>
+					</div>
+				</div>
+			</div>
 	</div>
-	<div class="row">
-		{{mail-list emails=model.emails showEmail=(action "showEmail") detailsShown=detailsShown}}
-		{{outlet}}
+	<div class="main">
+		<div class="main-sidebar">
+			{{sidebar-menu}}
+		</div>
+		<div class="main-content">
+			{{mail-list emails=model.emails showEmail=(action "showEmail") detailsShown=detailsShown}}
+			{{outlet}}
+		</div>
 	</div>
 </div>
