@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Mailfunnel.Data.Entities;
 
-namespace Mailfunnel.Web.Modules
+namespace Mailfunnel.Web.Dto
 {
     public class MailsResponse
     {

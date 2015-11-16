@@ -9,6 +9,11 @@
 	  	<a href="#">
 	  		<span class="icon-container"><i class="fa fa-folder fa-fw"></i></span> Groups
 	  	</a>
+	  	<ul>
+		  	{{#each groups as |group|}}
+		  		<li>{{group.name}}</li>
+		  	{{/each}}
+	  	</ul>
 	  </li>
 	</ul>
 {{yield}}

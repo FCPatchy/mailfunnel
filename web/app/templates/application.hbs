@@ -26,10 +26,10 @@
 	</div>
 	<div class="main">
 		<div class="main-sidebar">
-			{{sidebar-menu}}
+			{{sidebar-menu groups=model.groups.groups}}
 		</div>
 		<div class="main-content">
-			{{mail-list emails=model.emails showEmail=(action "showEmail") detailsShown=detailsShown}}
+			{{mail-list emails=model.mail.emails showEmail=(action "showEmail") detailsShown=detailsShown}}
 			{{outlet}}
 		</div>
 	</div>

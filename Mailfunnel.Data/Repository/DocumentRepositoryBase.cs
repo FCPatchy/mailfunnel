@@ -32,6 +32,7 @@ namespace Mailfunnel.Data.Repository
             return returnEntity;
         }
 
+
         public T Get(long id)
         {
             T val = default(T);
