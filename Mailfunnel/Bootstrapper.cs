@@ -25,6 +25,7 @@ namespace Mailfunnel
             container.RegisterType<INancyBootstrapper, Web.Bootstrapper>();
             container.RegisterType<ITcpListenerAdapter, NetworkTcpListener>(new ContainerControlledLifetimeManager(), new InjectionConstructor(IPAddress.Any, 25));
             container.RegisterType<IDocumentRepository<EmailEntity>, EmailRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDocumentRepository<GroupEntity>, GroupRepository>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMimeParser, MimeParser>();
             container.RegisterType<IMessager, Messager>();
             container.RegisterType<IClientManager, ClientManager>(new ContainerControlledLifetimeManager());
