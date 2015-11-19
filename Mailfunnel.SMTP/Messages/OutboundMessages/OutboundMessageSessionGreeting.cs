@@ -8,6 +8,8 @@
     {
         private readonly string _clientIdentifier;
 
+        public bool Multiline => true;
+
         /// <summary>
         ///     Constructor
         /// </summary>

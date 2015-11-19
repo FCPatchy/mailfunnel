@@ -15,6 +15,8 @@ namespace Mailfunnel.SMTP.Clients
         {
             Connected,
             Ehlo,
+            Auth,
+            AuthPassword,
             Mail,
             Rcpt,
             Data,
@@ -30,10 +32,12 @@ namespace Mailfunnel.SMTP.Clients
         {
             Connected,
             AwaitingEhloCommand,
+            AwaitingAuth,
+            AwaitingAuthPassword,
             AwaitingMailCommand,
             AwaitingRcptCommand,
             AwaitingDataCommand,
-            AwaitingData
+            AwaitingData,
         }
 
         private readonly Dictionary<int, Client> _clients;
@@ -56,15 +60,15 @@ namespace Mailfunnel.SMTP.Clients
             // Event transitions
             _fsm = new Action<Client, string>[,]
             {
-                // Connected     // EHLO    // MAIL      // RCPT      // DATA      // Data transmission     // NOOP         // QUIT
-                {StateConnected, null, null, null, null, null, NoOperation, Quit}, // Connected
-                {null, StateEhlo, BadSequence, BadSequence, BadSequence, null, NoOperation, Quit},
-                // AwaitingEhloCommand
-                {null, null, StateMail, BadSequence, BadSequence, BadSequence, NoOperation, Quit},
-                // AwaitingMailCommand
-                {null, null, null, StateRcpt, BadSequence, null, NoOperation, Quit}, // AwaitingRcptCommand
-                {null, null, null, StateRcpt, StateData, null, NoOperation, Quit}, // AwaitingDataCommand
-                {null, null, null, null, null, StateDataTransmission, NoOperation, Quit} // AwaitingData
+                // Connected      // EHLO      // AUTH      // Password     // MAIL       // RCPT                // DATA         // Data transmission     // NOOP         // QUIT
+                {StateConnected,  null,        null,        null,           null,         null,                  null,           null,                    NoOperation,    Quit}, // Connected
+                {null,            StateEhlo,   BadSequence, BadSequence,    BadSequence,  null,                  null,           null,                    NoOperation,    Quit}, // AwaitingEhloCommand
+                {null,            null,        StateAuth,   AuthRequired,   AuthRequired, null,                  null,           null,                    NoOperation,    Quit}, // AwaitingAuth
+                {null,            null,        null,        AuthPassword,   null,         null,                  null,           null,                    NoOperation,    Quit}, // AwaitingAuthPassword
+                {null,            null,        null,        null,           StateMail,    BadSequence,           null,           null,                    NoOperation,    Quit}, // AwaitingMailCommand
+                {null,            null,        null,        null,           null,         StateRcpt,             BadSequence,    null,                    NoOperation,    Quit}, // AwaitingRcptCommand
+                {null,            null,        null,        null,           null,         StateRcpt,             StateData,      null,                    NoOperation,    Quit}, // AwaitingDataCommand
+                {null,            null,        null,        null,           null,         null,                  null,           StateDataTransmission,   NoOperation,    Quit}  // AwaitingData
             };
         }
 
@@ -78,15 +82,35 @@ namespace Mailfunnel.SMTP.Clients
 
         private void StateEhlo(Client client, string s)
         {
-            client.ClientState = State.AwaitingMailCommand;
+            client.ClientState = State.AwaitingAuth;
             _messager.SendMessage(client, new OutboundMessageSessionGreeting(s));
+            _messager.SendMessage(client, new OutboundMessageAuth());
         }
+
+        private void StateAuth(Client client, string s)
+        {
+            client.ClientState = State.AwaitingAuthPassword;
+
+            client.Group = s;
+
+            _messager.SendMessage(client, new OutboundmessageAuthPassword());
+        }
+
+        private void AuthPassword(Client client, string s)
+        {
+            client.ClientState = State.AwaitingMailCommand;
+
+            // We don't care about the password
+            _messager.SendMessage(client, new OutboundMessageAuthSuccessful());
+        }
+
 
         private void StateMail(Client client, string s)
         {
             client.Message = new EmailMessage
             {
-                Sender = s
+                Sender = s,
+                Group = client.Group
             };
 
             client.ClientState = State.AwaitingRcptCommand;
@@ -142,6 +166,11 @@ namespace Mailfunnel.SMTP.Clients
             _messager.SendMessage(client, new OutboundMessageBadSequence());
         }
 
+        private void AuthRequired(Client client, string s)
+        {
+            _messager.SendMessage(client, new OutboundMessageAuthRequired());
+        }
+
         private void Quit(Client client, string s)
         {
             _messager.SendMessage(client, new OutboundMessageClosingTransmission());
@@ -186,12 +215,25 @@ namespace Mailfunnel.SMTP.Clients
                 ProcessEvent(client, Event.DataTransmission, e.ClientMessage.MessageText);
                 return;
             }
+            if (client.ClientState == State.AwaitingAuthPassword)
+            {
+                // Special case, expecting password
+                // No SMTP command
+                ProcessEvent(client, Event.AuthPassword, e.ClientMessage.MessageText);
+                return;
+            }
+
 
             switch (e.ClientMessage.SMTPCommand)
             {
                 case SmtpCommand.EHLO:
                     ev = Event.Ehlo;
                     commandText = e.ClientMessage.MessageText;
+                    break;
+
+                case SmtpCommand.AUTH:
+                    ev = Event.Auth;
+                    commandText = SmtpUtilities.ExtractAuthLogin(e.ClientMessage.MessageText);
                     break;
 
                 case SmtpCommand.MAIL:

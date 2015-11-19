@@ -69,8 +69,13 @@
     <Compile Include="Clients\Client.cs" />
     <Compile Include="Clients\ClientManager.cs" />
     <Compile Include="Clients\IClientManager.cs" />
+    <Compile Include="Clients\OutboundmessageAuthPassword.cs" />
+    <Compile Include="Clients\OutboundMessageAuthRequired.cs" />
+    <Compile Include="Clients\OutboundMessageAuthSuccessful.cs" />
     <Compile Include="EmailMessage.cs" />
     <Compile Include="ISmtpServer.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Messages\ClientDisconnectedEventArgs.cs" />
     <Compile Include="Messages\ClientConnectedEventArgs.cs" />
     <Compile Include="Messages\ClientMessage.cs" />
@@ -81,6 +86,7 @@
     <Compile Include="Messages\MessageProcessor.cs" />
     <Compile Include="Messages\Messager.cs" />
     <Compile Include="Messages\MessageType.cs" />
+    <Compile Include="Messages\OutboundMessages\OutboundMessageAuth.cs" />
     <Compile Include="Messages\OutboundMessages\OutboundMessageBadSequence.cs" />
     <Compile Include="Messages\OutboundMessages\OutboundMessageClosingTransmission.cs" />
     <Compile Include="Messages\OutboundMessages\OutboundMessageGreeting.cs" />

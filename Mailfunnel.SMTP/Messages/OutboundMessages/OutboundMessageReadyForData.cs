@@ -2,6 +2,7 @@
 {
     public class OutboundMessageReadyForData : IOutboundMessage
     {
+        public bool Multiline => false;
         public int ReplyCode => 354;
 
         public string GetMessage()

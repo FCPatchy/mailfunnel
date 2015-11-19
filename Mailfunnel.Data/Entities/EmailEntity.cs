@@ -12,5 +12,6 @@ namespace Mailfunnel.Data.Entities
         public string MessageBody { get; set; }
         public string Subject { get; set; }
         public DateTime Date { get; set; }
+        public string Group { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Unqlite;
+using System.Linq.Expressions;
 
 namespace Mailfunnel.Data.Repository
 {
@@ -12,5 +13,6 @@ namespace Mailfunnel.Data.Repository
         T Add(T entity);
         T Get(long id);
         IEnumerable<T> GetAll();
+        void Ensure(T entity, Expression<Func<T, bool>> func);
     }
 }

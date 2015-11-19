@@ -18,5 +18,6 @@ namespace Mailfunnel.SMTP
         public string Subject { get; set; }
         public string Message { get; set; }
         public DateTimeOffset Date { get; set; }
+        public string Group { get; set; }
     }
 }

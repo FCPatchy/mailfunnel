@@ -9,5 +9,7 @@ namespace Mailfunnel.SMTP.Clients
         public ITcpClient TcpClient { get; set; }
         public CancellationToken CancellationToken { get; set; }
         public EmailMessage Message { get; set; }
+        public string MessageBuffer { get; set; }
+        public string Group { get; set; }
     }
 }

@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Unqlite;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
 namespace Mailfunnel.Data.Repository
@@ -60,6 +64,53 @@ namespace Mailfunnel.Data.Repository
             });
 
             return vals;
+        }
+
+        public void Ensure(T entity, Expression<Func<T, bool>> func)
+        {
+            BinaryExpression eq = (BinaryExpression)func.Body;
+
+            // Get the left side
+            var left = (MemberExpression) eq.Left;
+            var leftMember = left.Member;
+            var leftName = leftMember.Name;
+
+            MemberExpression right = (MemberExpression)eq.Right;
+            MemberExpression rightExpression = (MemberExpression)right.Expression;
+            ConstantExpression constExpression = (ConstantExpression)rightExpression.Expression;
+            object obj = ((FieldInfo)rightExpression.Member).GetValue(constExpression.Value);
+            object val = ((PropertyInfo)right.Member).GetValue(obj, null);
+            string x;
+            string y;
+            string z;
+            var getExpression = $"$zCallback = function($rec){{ if($rec.{leftName} == '{val}'){{ return TRUE; }}else{{ return FALSE; }} }}; $data = db_fetch_all('{Collection}', $zCallback); if(count($data) == 0){{ print NULL; }}else{{ print $data[0]; }}";
+            if (!UnqliteDb.ExecuteJx9(getExpression, s =>
+            {
+                Console.WriteLine("Jx9 returned " + s);
+                x = s;
+                if (s == null)
+                {
+                    Console.WriteLine("s is null");
+                    var insertExpression = $"$entity = {JsonConvert.SerializeObject(entity)}; db_store('{Collection}', $entity); print $entity;";
+                    z = insertExpression;
+                    if (!UnqliteDb.ExecuteJx9(insertExpression, u =>
+                    {
+                        Console.WriteLine("Jx9 returned " + u);
+                        y = u;
+                        entity = JsonConvert.DeserializeObject<T>(u);
+                    }))
+                    {
+                     throw new Exception("Error running Jx9 expression");   
+                    }
+                }
+                else
+                {
+                    entity = JsonConvert.DeserializeObject<T>(s);
+                }
+            }))
+            {
+                throw new Exception("Error running Jx9 expression");
+            }
         }
 
         #region IDisposable Support

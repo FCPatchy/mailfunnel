@@ -6,11 +6,12 @@
     /// </summary>
     public class OutboundMessageGreeting : IOutboundMessage
     {
+        public bool Multiline => false;
         public int ReplyCode => 220;
 
         public string GetMessage()
         {
-            return "Mailfunnel service ready";
+            return "Mailfunnel ESMTP service ready";
         }
     }
 }

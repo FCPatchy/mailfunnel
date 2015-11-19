@@ -4,6 +4,7 @@
     {
         Unknown,
         EHLO,
+        AUTH,
         MAIL,
         RCPT,
         DATA,

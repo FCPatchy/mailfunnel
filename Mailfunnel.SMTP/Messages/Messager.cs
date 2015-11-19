@@ -26,7 +26,21 @@ namespace Mailfunnel.SMTP.Messages
         public void SendMessage(Client client, IOutboundMessage outboundMessage)
         {
             var generatedMessage = _messageProcessor.GenerateMessage(outboundMessage);
-            _networkMessager.SendMessage(client.TcpClient, client.CancellationToken, generatedMessage);
+            if (outboundMessage.Multiline)
+            {
+                // Don't send the message yet - store it in the message buffer
+                client.MessageBuffer += generatedMessage;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(client.MessageBuffer))
+                {
+                    generatedMessage = client.MessageBuffer + generatedMessage;
+                    client.MessageBuffer = string.Empty;
+                }
+
+                _networkMessager.SendMessage(client.TcpClient, client.CancellationToken, generatedMessage);
+            }
         }
 
         public void DisconnectClient(Client client)

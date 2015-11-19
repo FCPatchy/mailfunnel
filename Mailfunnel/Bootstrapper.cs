@@ -3,6 +3,7 @@ using Mailfunnel.Data.Entities;
 using Mailfunnel.Data.Repository;
 using Mailfunnel.SMTP;
 using Mailfunnel.SMTP.Clients;
+using Mailfunnel.SMTP.Logging;
 using Mailfunnel.SMTP.Messages;
 using Mailfunnel.SMTP.MIME;
 using Mailfunnel.SMTP.Network;
@@ -19,6 +20,7 @@ namespace Mailfunnel
             IUnityContainer container = new UnityContainer();
 
             container.RegisterType<IInitialiser, Initialiser>();
+            container.RegisterType<ILogger, Logger>();
             container.RegisterType<IEmailRecorder, EmailRecorder>();
             container.RegisterType<IWebServer, WebServer>();
             container.RegisterType<ISmtpServer, SmtpServer>();

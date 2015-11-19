@@ -61,7 +61,7 @@ namespace Mailfunnel.SMTP.Messages
         /// <returns></returns>
         public string GenerateMessage(IOutboundMessage message)
         {
-            return string.Format("{0} {1}\r\n", message.ReplyCode, message.GetMessage());
+            return $"{message.ReplyCode}{(message.Multiline ? "-" : " ")}{message.GetMessage()}\r\n";
         }
     }
 }

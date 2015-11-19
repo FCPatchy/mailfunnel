@@ -1,4 +1,6 @@
-﻿namespace Mailfunnel.SMTP
+﻿using System.Text.RegularExpressions;
+
+namespace Mailfunnel.SMTP
 {
     public static class SmtpUtilities
     {
@@ -15,6 +17,12 @@
             }
 
             return null;
+        }
+
+        public static string ExtractAuthLogin(string text)
+        {
+            var m = Regex.Match(text, @"login[ ]+(.+)");
+            return m.Success ? m.Groups[1].Value : string.Empty;
         }
     }
 }

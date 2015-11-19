@@ -51,7 +51,7 @@ namespace Mailfunnel.SMTP.Tests
         [Test]
         public async void HandleClientAsync_SendsWelcomeMessage()
         {
-            var mailCommunicator = new NetworkMessager();
+            var mailCommunicator = new NetworkMessager(null);
 
             await mailCommunicator.HandleClientAsync(new FakeTcpClient(), 0, new CancellationToken());
 
