@@ -38,6 +38,9 @@ namespace Mailfunnel
 
                 // Ensure it exists
                 _groupRepository.Ensure(group, x => x.Name == group.Name);
+
+                // Get the ID
+                groupId = group.__id;
             }
 
             _emailRepository.Add(new EmailEntity
@@ -47,7 +50,7 @@ namespace Mailfunnel
                 MessageBody = e.Message.Message,
                 Subject = e.Message.Subject,
                 Date = e.Message.Date.DateTime,
-                Group = e.Message.Group
+                GroupId = groupId
             });
         }
     }

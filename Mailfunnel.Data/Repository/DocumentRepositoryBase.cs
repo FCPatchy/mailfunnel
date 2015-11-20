@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Unqlite;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
 namespace Mailfunnel.Data.Repository
@@ -41,7 +40,7 @@ namespace Mailfunnel.Data.Repository
         {
             T val = default(T);
 
-            UnqliteDb.ExecuteJx9(string.Format("print db_fetch_by_id('{0}', {1});", Collection, id), s =>
+            UnqliteDb.ExecuteJx9($"print db_fetch_by_id('{Collection}', {id});", s =>
             {
                 val = JsonConvert.DeserializeObject<T>(s);
             });
@@ -58,7 +57,7 @@ namespace Mailfunnel.Data.Repository
         {
             IEnumerable<T> vals = null;
 
-            UnqliteDb.ExecuteJx9(string.Format("print db_fetch_all('{0}');", Collection), s =>
+            UnqliteDb.ExecuteJx9($"print db_fetch_all('{Collection}');", s =>
             {
                 vals = JsonConvert.DeserializeObject<IEnumerable<T>>(s);
             });
@@ -80,23 +79,15 @@ namespace Mailfunnel.Data.Repository
             ConstantExpression constExpression = (ConstantExpression)rightExpression.Expression;
             object obj = ((FieldInfo)rightExpression.Member).GetValue(constExpression.Value);
             object val = ((PropertyInfo)right.Member).GetValue(obj, null);
-            string x;
-            string y;
-            string z;
-            var getExpression = $"$zCallback = function($rec){{ if($rec.{leftName} == '{val}'){{ return TRUE; }}else{{ return FALSE; }} }}; $data = db_fetch_all('{Collection}', $zCallback); if(count($data) == 0){{ print NULL; }}else{{ print $data[0]; }}";
+
+            var getExpression = $"if(!db_exists('{Collection}')){{ $rc = db_create('{Collection}'); }} $zCallback = function($rec){{ if($rec.{leftName} == '{val}'){{ return TRUE; }}else{{ return FALSE; }} }}; $data = db_fetch_all('{Collection}', $zCallback); if(count($data) == 0){{ print '0'; }}else{{ print $data[0]; }}";
             if (!UnqliteDb.ExecuteJx9(getExpression, s =>
             {
-                Console.WriteLine("Jx9 returned " + s);
-                x = s;
-                if (s == null)
+                if (s == "0")
                 {
-                    Console.WriteLine("s is null");
                     var insertExpression = $"$entity = {JsonConvert.SerializeObject(entity)}; db_store('{Collection}', $entity); print $entity;";
-                    z = insertExpression;
                     if (!UnqliteDb.ExecuteJx9(insertExpression, u =>
                     {
-                        Console.WriteLine("Jx9 returned " + u);
-                        y = u;
                         entity = JsonConvert.DeserializeObject<T>(u);
                     }))
                     {

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Mailfunnel.SMTP.Messages;
 using Mailfunnel.SMTP.Messages.OutboundMessages;
 using Mailfunnel.SMTP.MIME;
+using MimeKit.Encodings;
 
 namespace Mailfunnel.SMTP.Clients
 {
@@ -91,7 +93,7 @@ namespace Mailfunnel.SMTP.Clients
         {
             client.ClientState = State.AwaitingAuthPassword;
 
-            client.Group = s;
+            client.Group = Encoding.UTF8.GetString(Convert.FromBase64String(s));
 
             _messager.SendMessage(client, new OutboundmessageAuthPassword());
         }
@@ -222,7 +224,6 @@ namespace Mailfunnel.SMTP.Clients
                 ProcessEvent(client, Event.AuthPassword, e.ClientMessage.MessageText);
                 return;
             }
-
 
             switch (e.ClientMessage.SMTPCommand)
             {
