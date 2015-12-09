@@ -84,10 +84,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mailfunnel.Data\Mailfunnel.Data.csproj">
-      <Project>{C06F2179-F40B-420E-ADAD-AC7820F4DC15}</Project>
-      <Name>Mailfunnel.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mailfunnel.SMTP\Mailfunnel.SMTP.csproj">
       <Project>{0674ED19-58B1-4E3D-9FCE-DBAF52C89A61}</Project>
       <Name>Mailfunnel.SMTP</Name>

@@ -2,7 +2,7 @@
 
 namespace Mailfunnel.SMTP.Clients
 {
-    public class OutboundmessageAuthPassword : IOutboundMessage
+    public class OutboundMessageAuthPassword : IOutboundMessage
     {
         public bool Multiline => false;
         public int ReplyCode => 334;

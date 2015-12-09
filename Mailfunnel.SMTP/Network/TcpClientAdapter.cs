@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
 
 namespace Mailfunnel.SMTP.Network
 {
-    public class TcpClientAdapter : ITcpClient
+    public class TcpClientAdapter : ITcpClientAdapter
     {
-        private readonly TcpClient _tcpClient;
+        private bool disposed = false;
+        private TcpClient _tcpClient;
 
         public TcpClientAdapter(int clientIdentifier, TcpClient tcpClient)
         {
@@ -15,13 +15,32 @@ namespace Mailfunnel.SMTP.Network
         }
 
         public int ClientIdentifier { get; }
+        public bool IsClosed { get; private set; }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (_tcpClient != null)
+                    {
+                        _tcpClient.Close();
+                        _tcpClient = null;
+                    }
+                }
+            }
+
+            disposed = true;
+        }
 
         public void Dispose()
         {
-            ((IDisposable) _tcpClient).Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public Stream GetStream()
+        public NetworkStream GetStream()
         {
             return _tcpClient.GetStream();
         }
@@ -29,6 +48,7 @@ namespace Mailfunnel.SMTP.Network
         public void Close()
         {
             _tcpClient.Close();
+            IsClosed = true;
         }
     }
 }

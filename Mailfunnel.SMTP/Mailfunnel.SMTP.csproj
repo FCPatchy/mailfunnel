@@ -66,10 +66,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\AwaitingAuthPasswordState.cs" />
+    <Compile Include="Clients\AwaitingAuthState.cs" />
+    <Compile Include="Clients\AwaitingDataCommandState.cs" />
+    <Compile Include="Clients\AwaitingDataState.cs" />
+    <Compile Include="Clients\AwaitingEhloCommandState.cs" />
+    <Compile Include="Clients\AwaitingMailCommandState.cs" />
+    <Compile Include="Clients\AwaitingRcptCommandState.cs" />
     <Compile Include="Clients\Client.cs" />
     <Compile Include="Clients\ClientManager.cs" />
+    <Compile Include="Clients\ConnectedState.cs" />
     <Compile Include="Clients\IClientManager.cs" />
-    <Compile Include="Clients\OutboundmessageAuthPassword.cs" />
+    <Compile Include="Clients\AbstractClientState.cs" />
+    <Compile Include="Clients\IClientState.cs" />
+    <Compile Include="Clients\OutboundMessageAuthPassword.cs" />
     <Compile Include="Clients\OutboundMessageAuthRequired.cs" />
     <Compile Include="Clients\OutboundMessageAuthSuccessful.cs" />
     <Compile Include="EmailMessage.cs" />
@@ -96,7 +106,7 @@
     <Compile Include="MIME\IMimeParser.cs" />
     <Compile Include="MIME\MimeParser.cs" />
     <Compile Include="Network\INetworkMessager.cs" />
-    <Compile Include="Network\ITcpClient.cs" />
+    <Compile Include="Network\ITcpClientAdapter.cs" />
     <Compile Include="Network\ITcpListenerAdapter.cs" />
     <Compile Include="Network\NetworkClientDisconnectedEventArgs.cs" />
     <Compile Include="Network\NetworkClientConnectedEventArgs.cs" />

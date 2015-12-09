@@ -5,7 +5,7 @@ namespace Mailfunnel.SMTP.Messages
 {
     public class ClientMessageReceivedEventArgs
     {
-        public ClientMessageReceivedEventArgs(ITcpClient client, CancellationToken cancellationToken,
+        public ClientMessageReceivedEventArgs(ITcpClientAdapter client, CancellationToken cancellationToken,
             ClientMessage clientMessage)
         {
             Client = client;
@@ -14,7 +14,7 @@ namespace Mailfunnel.SMTP.Messages
         }
 
         public CancellationToken CancellationToken { get; private set; }
-        public ITcpClient Client { get; private set; }
+        public ITcpClientAdapter Client { get; private set; }
         public ClientMessage ClientMessage { get; private set; }
     }
 }

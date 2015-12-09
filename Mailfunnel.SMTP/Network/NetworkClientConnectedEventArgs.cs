@@ -5,13 +5,13 @@ namespace Mailfunnel.SMTP.Network
 {
     public class NetworkClientConnectedEventArgs : EventArgs
     {
-        public NetworkClientConnectedEventArgs(ITcpClient client, CancellationToken cancellationToken)
+        public NetworkClientConnectedEventArgs(ITcpClientAdapter client, CancellationToken cancellationToken)
         {
             Client = client;
             CancellationToken = cancellationToken;
         }
 
-        public ITcpClient Client { get; private set; }
+        public ITcpClientAdapter Client { get; private set; }
         public CancellationToken CancellationToken { get; set; }
     }
 }

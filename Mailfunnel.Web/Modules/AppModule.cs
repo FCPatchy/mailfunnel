@@ -1,6 +1,4 @@
-﻿using Mailfunnel.Data.Entities;
-using Mailfunnel.Data.Repository;
-using Mailfunnel.Web.Dto;
+﻿using Mailfunnel.Web.Dto;
 using Nancy;
 
 namespace Mailfunnel.Web.Modules

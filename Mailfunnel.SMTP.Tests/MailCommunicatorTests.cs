@@ -11,13 +11,14 @@ namespace Mailfunnel.SMTP.Tests
     [TestFixture]
     public class MailCommunicatorTests
     {
-        internal class FakeTcpClient : ITcpClient
+        internal class FakeTcpClient : ITcpClientAdapter
         {
             public void Dispose()
             {
             }
 
             public int ClientIdentifier { get; }
+            public bool IsClosed { get; }
 
             public Stream GetStream()
             {

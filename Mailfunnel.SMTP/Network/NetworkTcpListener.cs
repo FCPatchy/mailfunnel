@@ -24,7 +24,7 @@ namespace Mailfunnel.SMTP.Network
             _tcpListener.Stop();
         }
 
-        public async Task<ITcpClient> AcceptTcpClientAsync()
+        public async Task<ITcpClientAdapter> AcceptTcpClientAsync()
         {
             var tcpClient = await _tcpListener.AcceptTcpClientAsync();
 

@@ -6,6 +6,6 @@ namespace Mailfunnel.SMTP.Network
     {
         void Start();
         void Stop();
-        Task<ITcpClient> AcceptTcpClientAsync();
+        Task<ITcpClientAdapter> AcceptTcpClientAsync();
     }
 }

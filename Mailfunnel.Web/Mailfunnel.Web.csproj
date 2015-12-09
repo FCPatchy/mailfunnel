@@ -82,12 +82,6 @@
     <Compile Include="WebServer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mailfunnel.Data\Mailfunnel.Data.csproj">
-      <Project>{C06F2179-F40B-420E-ADAD-AC7820F4DC15}</Project>
-      <Name>Mailfunnel.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
