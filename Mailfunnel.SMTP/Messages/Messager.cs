@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using Mailfunnel.SMTP.Clients;
+using Mailfunnel.SMTP.Logging;
 using Mailfunnel.SMTP.Network;
 
 namespace Mailfunnel.SMTP.Messages
@@ -8,11 +10,13 @@ namespace Mailfunnel.SMTP.Messages
     {
         private readonly IMessageProcessor _messageProcessor;
         private readonly INetworkMessager _networkMessager;
+        private readonly ILogger _logger;
 
-        public Messager(INetworkMessager networkMessager, IMessageProcessor messageProcessor)
+        public Messager(INetworkMessager networkMessager, IMessageProcessor messageProcessor, ILogger logger)
         {
             _networkMessager = networkMessager;
             _messageProcessor = messageProcessor;
+            _logger = logger;
 
             _networkMessager.ClientConnected += NetworkClientConnected;
             _networkMessager.ClientMessageReceived += NetworkClientMessageReceived;
@@ -66,10 +70,14 @@ namespace Mailfunnel.SMTP.Messages
         {
             if (ClientMessageReceived != null)
             {
-                var clientMessage = _messageProcessor.ProcessMessage(e.MessageText);
+                var messageText = Encoding.UTF8.GetString(e.Message).TrimEnd();
 
-                ClientMessageReceived(sender,
-                    new ClientMessageReceivedEventArgs(e.Client, e.CancellationToken, clientMessage));
+                var clientMessage = _messageProcessor.ProcessMessage(messageText);
+
+                _logger.LogFormat("CLIENT: {0}", messageText);
+
+                if (messageText.Length > 0 && ClientMessageReceived != null)
+                    ClientMessageReceived(sender, new ClientMessageReceivedEventArgs(e.Client, e.CancellationToken, clientMessage));
             }
         }
     }

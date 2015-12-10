@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Sockets;
 
 namespace Mailfunnel.SMTP.Network
@@ -40,7 +41,7 @@ namespace Mailfunnel.SMTP.Network
             GC.SuppressFinalize(this);
         }
 
-        public NetworkStream GetStream()
+        public Stream GetStream()
         {
             return _tcpClient.GetStream();
         }

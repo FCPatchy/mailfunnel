@@ -7,12 +7,21 @@ namespace Mailfunnel
     {
         private static void Main(string[] args)
         {
+            try
+            {
+
+            
             var container = Bootstrapper.InitialiseContainer();
 
             var initialiser = container.Resolve<IInitialiser>();
             initialiser.Initialise();
 
             Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

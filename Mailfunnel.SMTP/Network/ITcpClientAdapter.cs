@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net.Sockets;
+using System.IO;
 
 namespace Mailfunnel.SMTP.Network
 {
@@ -7,7 +7,7 @@ namespace Mailfunnel.SMTP.Network
     {
         int ClientIdentifier { get; }
         bool IsClosed { get; }
-        NetworkStream GetStream();
+        Stream GetStream();
         void Close();
     }
 }

@@ -27,7 +27,7 @@ namespace Mailfunnel.SMTP
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
-        public async void Listen()
+        public async Task Listen()
         {
             var cts = new CancellationTokenSource();
 
@@ -60,7 +60,7 @@ namespace Mailfunnel.SMTP
 
                 connections++;
 
-                await _networkMessager.HandleClientAsync(client, connections, token);
+                _networkMessager.HandleClientAsync(client, connections, token);
             }
         }
 

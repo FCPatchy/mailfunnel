@@ -5,16 +5,15 @@ namespace Mailfunnel.SMTP.Network
 {
     public class NetworkClientMessageReceivedEventArgs : EventArgs
     {
-        public NetworkClientMessageReceivedEventArgs(ITcpClientAdapter client, CancellationToken cancellationToken,
-            string messageText)
+        public NetworkClientMessageReceivedEventArgs(ITcpClientAdapter client, CancellationToken cancellationToken, byte[] message)
         {
             Client = client;
             CancellationToken = cancellationToken;
-            MessageText = messageText;
+            Message = message;
         }
 
         public ITcpClientAdapter Client { get; private set; }
         public CancellationToken CancellationToken { get; private set; }
-        public string MessageText { get; private set; }
+        public byte[] Message { get; private set; }
     }
 }

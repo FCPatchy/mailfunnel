@@ -26,52 +26,35 @@ namespace Mailfunnel.SMTP.Network
                     ClientConnected(this, new NetworkClientConnectedEventArgs(client, token));
 
                 var buf = new byte[4096];
-                try
+
+                using (var stream = client.GetStream())
                 {
-
-
-                    using (var stream = client.GetStream())
+                    while (!token.IsCancellationRequested)
                     {
-                        while (!token.IsCancellationRequested)
+                        Array.Clear(buf, 0, buf.Length);
+                        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(15));
+
+                        var amountReadTask = stream.ReadAsync(buf, 0, buf.Length, token);
+                        var completedTask = await Task.WhenAny(timeoutTask, amountReadTask).ConfigureAwait(false);
+
+                        // Client timed out
+                        if (completedTask == timeoutTask)
                         {
-                            Array.Clear(buf, 0, buf.Length);
-                            var timeoutTask = Task.Delay(TimeSpan.FromSeconds(15));
-                            var amountReadTask = stream.ReadAsync(buf, 0, buf.Length, token);
-                            var completedTask = await Task.WhenAny(timeoutTask, amountReadTask).ConfigureAwait(false);
+                            if (ClientDisconnected != null)
+                                ClientDisconnected(this, new NetworkClientDisconnectedEventArgs(client.ClientIdentifier));
 
-                            // Client timed out
-                            if (completedTask == timeoutTask)
-                            {
-                                if (ClientDisconnected != null)
-                                    ClientDisconnected(this,
-                                        new NetworkClientDisconnectedEventArgs(client.ClientIdentifier));
-
-                                stream.Close();
-                                break;
-                            }
-
-                            //var amountRead = amountReadTask.Result;
-                            //if (amountRead == 0) break; // End of stream
-
-                            //var resultBytes = new byte[amountRead];
-                            //Array.Copy(buf, resultBytes, amountRead);
-
-                            //var messageText = Encoding.UTF8.GetString(resultBytes).TrimEnd();
-
-                            //_logger.LogFormat("CLIENT: {0}", messageText);
-
-                            //if (messageText.Length > 0 && ClientMessageReceived != null)
-                            //    ClientMessageReceived(this, new NetworkClientMessageReceivedEventArgs(client, token, messageText));
+                            break;
                         }
+
+                        var amountRead = amountReadTask.Result;
+                        if (amountRead == 0) break; // End of stream
+
+                        var resultBytes = new byte[amountRead];
+                        Array.Copy(buf, resultBytes, amountRead);
+
+                        if (ClientMessageReceived != null)
+                            ClientMessageReceived(this, new NetworkClientMessageReceivedEventArgs(client, token, resultBytes));
                     }
-                }
-                catch (ObjectDisposedException ex)
-                {
-                    // Ignore this...
-                }
-                catch (Exception)
-                {
-                    throw;
                 }
             }
         }
