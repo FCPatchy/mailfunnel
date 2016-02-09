@@ -6,8 +6,4 @@ namespace Mailfunnel.Web.Dto
     {
         public IEnumerable<Email> Emails { get; set; }
     }
-
-    public class Email
-    {
-    }
 }

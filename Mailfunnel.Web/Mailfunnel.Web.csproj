@@ -73,7 +73,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Dto\Email.cs" />
+    <Compile Include="Dto\Group.cs" />
     <Compile Include="IWebServer.cs" />
+    <Compile Include="Managers\EmailManager.cs" />
+    <Compile Include="Managers\GroupManager.cs" />
+    <Compile Include="Managers\IEmailManager.cs" />
+    <Compile Include="Managers\IGroupManager.cs" />
     <Compile Include="Modules\AppModule.cs" />
     <Compile Include="Dto\GroupsResponse.cs" />
     <Compile Include="Dto\MailsResponse.cs" />
@@ -84,6 +90,13 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mailfunnel.Data\Mailfunnel.Data.csproj">
+      <Project>{4590a716-0d49-4733-b120-faf6f331213f}</Project>
+      <Name>Mailfunnel.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

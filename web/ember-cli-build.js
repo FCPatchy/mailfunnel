@@ -1,30 +1,10 @@
+/*jshint node:true*/
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-      lessOptions: {
-      paths: [
-        'bower_components/bootstrap/less'
-      ]
-    }
-  });
-
-  // MomentJS
-  app.import('bower_components/moment/moment.js');
-  // Bootstrap components
-  app.import('bower_components/bootstrap/js/tooltip.js');
-
-  // FontAwesome
-  var fontsDir = 'assets/fonts';
-  app.import('bower_components/font-awesome/fonts/fontawesome-webfont.ttf', {
-    destDir: fontsDir
-  });
-  app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff', {
-    destDir: fontsDir
-  });
-  app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff2', {
-    destDir: fontsDir
+    // Add options here
   });
 
   // Use `app.import` to add additional libraries to the generated
