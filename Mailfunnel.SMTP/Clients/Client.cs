@@ -33,9 +33,14 @@ namespace Mailfunnel.SMTP.Clients
         public int ClientIdentifier => TcpClient.ClientIdentifier;
         public ITcpClientAdapter TcpClient { get; }
 
-        public void MessageReceived(ClientMessage clientMessage)
+        public EmailMessage MessageReceived(ClientMessage clientMessage)
         {
             _clientState.MessageReceived(clientMessage);
+
+            if (Message != null && Message.Complete)
+                return Message;
+
+            return null;
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Mailfunnel.Data.Repository
     {
         IEnumerable<Email> GetAllEmails();
         Email GetEmail(int id);
+        void SetEmail(Email email);
     }
 }

@@ -13,5 +13,10 @@ namespace Mailfunnel.Data.Repository
                 return null;
             }
         }
+
+        public Group GetGroup(string groupName)
+        {
+            return null;
+        }
     }
 }

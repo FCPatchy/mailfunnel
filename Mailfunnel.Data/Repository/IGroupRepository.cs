@@ -6,5 +6,6 @@ namespace Mailfunnel.Data.Repository
     public interface IGroupRepository
     {
         IEnumerable<Group> GetAllGroups();
+        Group GetGroup(string groupName);
     }
 }

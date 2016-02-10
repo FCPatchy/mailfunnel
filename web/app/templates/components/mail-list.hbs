@@ -1,6 +1,6 @@
 <div class="content {{if detailsShown 'halfsize'}}">
 	{{#each emails as |email|}}
-		{{#linkTo "mail" email.__id tagName="div" activeClass="selected"}}
+		{{#link-to "mail" email.__id tagName="div" activeClass="selected"}}
 		<div class="mail" {{action 'select' email}}>
 			<div class="tab"></div>
 			<div class="select"></div>
@@ -8,7 +8,7 @@
 			<div class="subject">{{email.subject}}</div>
 			<div class="received">{{format-date email.date}}</div>
 		</div>
-		{{/linkTo}}
+		{{/link-to}}
 	{{/each}}
 </div>
 {{yield}}

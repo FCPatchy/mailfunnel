@@ -5,6 +5,7 @@ namespace Mailfunnel.SMTP
 {
     public class EmailMessage
     {
+        public bool Complete { get; set; }
         private IList<string> _recipients;
 
         public string Sender { get; set; }

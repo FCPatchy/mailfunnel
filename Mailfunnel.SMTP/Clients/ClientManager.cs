@@ -25,7 +25,7 @@ namespace Mailfunnel.SMTP.Clients
         }
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
-        
+
 
         private void AuthRequired(Client client, string s)
         {
@@ -49,7 +49,9 @@ namespace Mailfunnel.SMTP.Clients
             var clientIdentifier = e.Client.ClientIdentifier;
             var client = _clients[clientIdentifier];
 
-            client.MessageReceived(e.ClientMessage);
+            var message = client.MessageReceived(e.ClientMessage);
+            if (message != null)
+                MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
         }
     }
 }

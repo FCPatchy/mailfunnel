@@ -39,7 +39,8 @@ namespace Mailfunnel.SMTP.Clients
                     // Parse the message
                     _mimeParser.ParseMessage(_client.Message);
 
-                    // todo: MessageReceived?.Invoke(this, new MessageReceivedEventArgs(client.Message)); // wtf?
+                    // Full message has been formed
+                    _client.Message.Complete = true;
 
                     _client.ChangeState(new AwaitingMailCommandState(_client, _messager, _mimeParser));
 

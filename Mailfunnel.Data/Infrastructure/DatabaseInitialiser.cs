@@ -12,6 +12,8 @@ namespace Mailfunnel.Data.Infrastructure
             var dbPath = ConfigurationManager.AppSettings["ConnectionString"];
             if (!File.Exists(dbPath))
                 SQLiteConnection.CreateFile(dbPath);
+
+            SeedDatabase();
         }
 
         public void SeedDatabase()
@@ -23,11 +25,12 @@ namespace Mailfunnel.Data.Infrastructure
                 connection.SQLiteConnection.Execute(@"
                     CREATE TABLE IF NOT EXISTS [Emails] (
                         [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                        [GroupId] INTEGER DEFAULT 0,
                         [From] NVARCHAR(100) NOT NULL,
                         [To] NVARCHAR(100) NOT NULL,
                         [Subject] NVARCHAR(200) NOT NULL,
-                        [BodyText] NVARCHAR(MAX) NULL,
-                        [BodyHtml] NVARCHAR(MAX) NULL
+                        [BodyText] NVARCHAR(5000) NULL,
+                        [BodyHtml] NVARCHAR(5000) NULL
                     )");
             }
         }
