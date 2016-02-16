@@ -1,6 +1,6 @@
 .sidebar-menu {
 	height: 100%;
-	background: darken(@color-primary, 30%);
+	background: darken($color-primary, 30%);
 	padding-top: 35px;
 
 	.nav-pills {
@@ -8,7 +8,7 @@
 			&.active {
 
 				> a {
-					background-color: darken(@color-primary, 40%);
+					background-color: darken($color-primary, 40%);
 				}
 
 				&:after {
@@ -16,21 +16,21 @@
 					position: absolute;
 					left: -6px;
 					top: 14px;
-					background-color: @red;
+					background-color: $red;
 					display: block;
 					width: 10px;
 					height: 10px;
-					.rotate(45deg);
+					@include rotate(45deg);
 				}
 			}
 
 			> a {
 				border-radius: 0;
-				background: darken(@color-primary, 30%);
-				color: @white;
+				background: darken($color-primary, 30%);
+				color: $white;
 
 				&:hover {
-					background-color: darken(@color-primary, 40%);
+					background-color: darken($color-primary, 40%);
 				}
 
 

@@ -1,7 +1,7 @@
 .mail-details {
-	.make-md-column(6);
+	@include make-md-column(6);
 
-	.transition(opacity 0.2s ease);
+	@include transition(opacity 0.2s ease);
 
 	background: #fff;
 	padding-top: 5px;
@@ -14,16 +14,16 @@
 	.toolbar {
 		text-align: right;
 		float: right;
-		background: @color-tertiary;
+		background: $color-tertiary;
 		border-radius: 3px;
 		padding: 2px 6px;
 
 		i {
-			color: @color-light;
+			color: $color-light;
 			font-size: 22px;
 
 			&:hover {
-				color: @red;
+				color: $red;
 			}
 		}
 
@@ -36,9 +36,6 @@
 	}
 
 	.body {
-
 		margin-top: 25px;
-
-		.normalize() !important;
 	}
 }

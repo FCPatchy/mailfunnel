@@ -1,0 +1,17 @@
+{{yield}}
+{{!-- <button {{action "showModal"}}>Show Modal</button> --}}
+{{#if showModal}}
+	{{#modal-dialog containerClassNames=containerClassNames overlayClassNames=overlayClassNames}}
+		<div class="modal-icon">
+			<i class="fa fa-{{modalIcon}} fa-5x"></i>
+		</div>
+		<div class="modal-body">
+			<h4>{{modalTitle}}</h4>
+			<span>{{modalText}}</span>
+		</div>
+		<div class="modal-buttons">
+			<button class="btn btn-primary" {{action 'confirm'}}>Yes</button>
+			<button class="btn btn-secondary" {{action 'reject'}}>No</button>
+		</div>
+	{{/modal-dialog}}
+{{/if}}

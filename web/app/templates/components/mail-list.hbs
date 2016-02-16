@@ -1,11 +1,11 @@
 <div class="content {{if detailsShown 'halfsize'}}">
 	{{#each emails as |email|}}
-		{{#link-to "mail" email.__id tagName="div" activeClass="selected"}}
-		<div class="mail" {{action 'select' email}}>
+		{{#link-to "mail" email.id tagName="div" activeClass="selected"}}
+		<div class="mail">
 			<div class="tab"></div>
-			<div class="select"></div>
+			<div class="select"><input type="checkbox" /></div>
 			<div class="from">{{email.from}}</div>
-			<div class="subject">{{email.subject}}</div>
+			<div class="subject" {{action 'select' email}}>{{email.subject}}</div>
 			<div class="received">{{format-date email.date}}</div>
 		</div>
 		{{/link-to}}

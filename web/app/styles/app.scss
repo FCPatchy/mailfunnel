@@ -1,10 +1,19 @@
 @import 'bootstrap';
 @import url(http://fonts.googleapis.com/css?family=Roboto:100,400,700);
-@import 'normalize';
-@import './bower_components/font-awesome/less/font-awesome.less';
+@import 'bootstrap/normalize';
+@import 'font-awesome';
+
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
+
+//@import "components/buttons"; Todo - put back in
+
+
 
 @import 'variables';
 
+/* Component styles */
+@import 'prompt-modal';
 @import 'sidebar-menu';
 @import 'mail-details';
 
@@ -20,7 +29,7 @@ html,
 }
 
 body {
-	background: @color-tertiary;
+	background: $color-tertiary;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
 }
@@ -53,8 +62,8 @@ body {
 }
 
 .header {
-	.make-row();
-	.row.no-gutters;
+	@include make-row();
+	@extend .row.no-gutters;
 	margin-left: 0;
 	margin-right: 0;
 
@@ -65,10 +74,10 @@ body {
 	.header-logo {
 		padding-top: 5px;
 		
-		background: @red;
+		background: $red;
 		
 		font-weight: 100;
-		color: @color-tertiary;
+		color: $color-tertiary;
 
 		.logo {
 			background: url('/assets/images/logo.png');
@@ -77,13 +86,13 @@ body {
 			display: inline-block;
 		}
 
-		@media(max-width: @screen-md-min){
+		@media(max-width: $screen-md-min){
 			height: 30px;
 			font-size: 1.2em;
 			text-align: center;
 		}
 
-		@media(min-width: @screen-md-min){
+		@media(min-width: $screen-md-min){
 			float: left;
 			width: 320px;
 			font-size: 2em;
@@ -94,39 +103,39 @@ body {
 	}
 
 	.header-tools {
-		.box-shadow(1px 1px 1px rgba(0, 0, 0, 0.1));
+		@include box-shadow(1px 1px 1px rgba(0, 0, 0, 0.1));
 		height: 50px;
-		background: @white;
+		background: $white;
 		padding-left: 320px;
 
 		.search {
 			margin-top: 7px;
 			
 			> input {
-				background: @color-tertiary;
+				background: $color-tertiary;
 				border: 0;
 			}
 
 			button {
-				border: 1px solid @red;
-				background: @red;
-				color: @white;
+				border: 1px solid $red;
+				background: $red;
+				color: $white;
 
 				> i {
-					color: @white;
+					color: $white;
 					font-size: 16px;
 				}
 			}
 		}
 
 		.tools {
-			.make-md-column(6);
+			@include make-md-column(6);
 			text-align: right;
 			padding-top: 13px;
 		}
 
 		i {
-			color: @color-light;
+			color: $color-light;
 			font-size: 22px;
 		}
 	}
@@ -139,7 +148,7 @@ body {
 	height: 100%;
 	min-width: 220px;
 
-	@media(max-width: @screen-md-min){
+	@media(max-width: $screen-md-min){
 		display: none;
 	}
 }

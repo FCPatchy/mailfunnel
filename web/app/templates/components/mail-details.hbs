@@ -1,7 +1,14 @@
 <div class="mail-details transparent">
 	<div class="toolbar">
 			{{toolbar-button icon="code" tooltip="View headers"}} {{!-- action=(action 'view-headers')--}}
-			{{toolbar-button icon="trash" tooltip="Delete"}} {{!-- action 'delete' --}}
+			{{#prompt-modal modalIcon="question-circle" modalTitle="Are you sure?" modalText="Are you sure you want to delete this email?" action=(action 'delete' mail)}}
+				{{toolbar-button icon="trash" tooltip="Delete" action='showModal'}}
+			{{/prompt-modal}}
+
+
+{{!-- 			{{#modal-dialog}}
+				bla bla
+			{{/modal-dialog}} --}}
 	</div>
 	<div class="from">{{mail.from}}</div>
 	<div class="subject">{{mail.subject}}</div>

@@ -18,14 +18,20 @@ namespace Mailfunnel.Web.Managers
 
         public IEnumerable<Email> GetAllEmails()
         {
-            var emails = _emailRepository.GetAllEmails();
+            var allEmails = _emailRepository.GetAllEmails();
+            var emails = allEmails as IList<Data.Models.Email> ?? allEmails.ToList();
+
             if (!emails.Any())
                 return null;
 
             return (from email in emails
                     select new Email
                     {
-                        Subject = email.Subject
+                        Id = email.Id,
+                        Subject = email.Subject,
+                        From = email.From,
+                        To = email.To,
+                        BodyHtml = email.BodyHtml
                     });
         }
 
@@ -37,7 +43,11 @@ namespace Mailfunnel.Web.Managers
 
             return new Email
             {
-                Subject = email.Subject
+                Id = email.Id,
+                Subject = email.Subject,
+                From = email.From,
+                To = email.To,
+                BodyHtml = email.BodyHtml
             };
         }
     }

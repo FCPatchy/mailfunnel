@@ -1,0 +1,21 @@
+/* Modal overlay (backdrop) */
+.prompt-modal-overlay.ember-modal-overlay {
+	background: rgba(0, 0, 0, 0.3);
+}
+
+/* The modal itself */
+.prompt-modal.ember-modal-dialog {
+	border-radius: 2px;
+	@include box-shadow(1px 1px 5px rgba(0, 0, 0, 0.52));
+
+	.modal-icon {
+		text-align: center;
+		color: #E0E0E0;
+		min-width: 22vw;
+		margin: 15px 0;
+	}
+
+	.modal-body {
+		text-align: center;
+	}
+}

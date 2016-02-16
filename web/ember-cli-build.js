@@ -4,9 +4,10 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-      lessOptions: {
-        paths: [    
-          'bower_components/bootstrap/less'   
+      sassOptions: {
+        includePaths: [    
+          'bower_components/bootstrap-sass/assets/stylesheets',
+          'bower_components/font-awesome-sass/assets/stylesheets'
         ]   
       }   
     });   
@@ -14,17 +15,17 @@ module.exports = function(defaults) {
     // MomentJS   
     app.import('bower_components/moment/moment.js');    
     // Bootstrap components   
-    app.import('bower_components/bootstrap/js/tooltip.js');   
+    app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js');   
       
     // FontAwesome    
     var fontsDir = 'assets/fonts';    
-    app.import('bower_components/font-awesome/fonts/fontawesome-webfont.ttf', {   
+    app.import('bower_components/font-awesome-sass/assets/fonts/font-awesome/fontawesome-webfont.ttf', {   
       destDir: fontsDir   
     });   
-    app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff', {    
+    app.import('bower_components/font-awesome-sass/assets/fonts/font-awesome/fontawesome-webfont.woff', {    
       destDir: fontsDir   
     });   
-    app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff2', {   
+    app.import('bower_components/font-awesome-sass/assets/fonts/font-awesome/fontawesome-webfont.woff2', {   
       destDir: fontsDir
   });
 

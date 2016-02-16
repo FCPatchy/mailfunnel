@@ -1,0 +1,71 @@
+.content {
+	@include make-md-column(12);
+	@include transition(width 0.2s ease);
+
+	&.halfsize {
+		@include make-md-column(6);
+
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+
+	// &, &.halfsize {
+	// 	padding-left: 30px;
+	// 	padding-right: 30px;
+	// }
+}
+
+.content {
+
+	padding-left: 25px;
+	padding-right: 25px;
+
+	.mail {
+		@include make-row();
+
+		height: 35px;
+		background-color: $white;
+		margin-bottom: 1px;
+
+		.from,
+		.subject {
+			@include make-md-column(4);
+
+			padding-top: 8px;
+		}
+
+		.received {
+			@include make-md-column(3);
+
+			padding-top: 8px;
+			text-align: right;
+		}
+
+		&:hover {
+			background: lighten($color-dark, 20%);
+			color: $white;
+		}
+	}
+
+	.ember-view.selected .mail {
+		background-color: $color-dark;
+		color: $white;
+		@include transition(background-color 0.1s ease);
+	}
+
+	&.halfsize .mail {
+		.from {
+			@include make-md-column(4);
+		}
+
+		.subject {
+			@include make-md-column(6);
+			@include make-sm-column(5);
+		}
+
+		.received {
+			@include make-md-column(2);
+			@include make-sm-column(3);
+		}
+	}
+}
